@@ -25,6 +25,10 @@ Route::controller(PageController::class)->group(function () {
     Route::post('/contact-us', 'sendContact')->name('contact.send');
     Route::get('/appointment', 'appointment')->name('appointment');
     Route::post('/appointment', 'bookAppointment')->name('appointment.book');
+    Route::get('/services/shipping', 'shipping')->name('services.shipping');
+    Route::post('/services/shipping', 'sendShipping')->name('services.shipping.send');
+    Route::get('/services/consignment', 'consignment')->name('services.consignment');
+    Route::post('/services/consignment', 'sendConsignment')->name('services.consignment.send');
 });
 
 

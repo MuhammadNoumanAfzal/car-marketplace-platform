@@ -155,6 +155,98 @@ class PageController extends Controller
             ->with('status', 'Your appointment request has been received. Our team will confirm your booking shortly.');
     }
 
+    public function shipping(): View
+    {
+        return view('user.services.shipping', [
+            'transportTypes' => [
+                'Open carrier',
+                'Enclosed carrier',
+                'Expedited shipping',
+            ],
+            'pickupWindows' => [
+                'Within 3 days',
+                'This week',
+                'Within 2 weeks',
+                'Flexible',
+            ],
+        ]);
+    }
+
+    public function sendShipping(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'email', 'max:120'],
+            'phone' => ['required', 'string', 'max:30'],
+            'vehicle_year' => ['required', 'string', 'max:10'],
+            'vehicle_make' => ['required', 'string', 'max:80'],
+            'vehicle_model' => ['required', 'string', 'max:80'],
+            'origin' => ['required', 'string', 'max:120'],
+            'destination' => ['required', 'string', 'max:120'],
+            'transport_type' => ['required', 'string', 'max:60'],
+            'pickup_window' => ['required', 'string', 'max:60'],
+            'notes' => ['nullable', 'string', 'max:1500'],
+        ]);
+
+        logger()->info('Nitro Motors USA shipping request received.', $validated);
+
+        return redirect()
+            ->route('services.shipping')
+            ->with('status', 'Your shipping request has been received. Our team will send you a transport quote shortly.');
+    }
+
+    public function consignment(): View
+    {
+        return view('user.services.consighment', [
+            'years' => range(date('Y'), date('Y') - 15),
+            'transmissions' => [
+                'Automatic',
+                'Manual',
+                'CVT',
+                'Dual-clutch',
+            ],
+            'states' => [
+                'Florida',
+                'Texas',
+                'California',
+                'New York',
+                'Georgia',
+            ],
+        ]);
+    }
+
+    public function sendConsignment(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'vehicle_year' => ['required', 'string', 'max:10'],
+            'make' => ['required', 'string', 'max:80'],
+            'model' => ['required', 'string', 'max:80'],
+            'trim' => ['nullable', 'string', 'max:80'],
+            'exterior_color' => ['nullable', 'string', 'max:50'],
+            'interior_color' => ['nullable', 'string', 'max:50'],
+            'cylinders' => ['nullable', 'string', 'max:20'],
+            'liters' => ['nullable', 'string', 'max:20'],
+            'mileage' => ['required', 'string', 'max:30'],
+            'transmission' => ['required', 'string', 'max:40'],
+            'lien_holder' => ['nullable', 'string', 'max:120'],
+            'additional_options' => ['nullable', 'string', 'max:1500'],
+            'first_name' => ['required', 'string', 'max:60'],
+            'last_name' => ['required', 'string', 'max:60'],
+            'address' => ['required', 'string', 'max:150'],
+            'city' => ['required', 'string', 'max:80'],
+            'state' => ['required', 'string', 'max:80'],
+            'zip' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email', 'max:120'],
+            'phone' => ['required', 'string', 'max:30'],
+        ]);
+
+        logger()->info('Nitro Motors USA consignment request received.', $validated);
+
+        return redirect()
+            ->route('services.consignment')
+            ->with('status', 'Your consignment request has been received. Our team will review the vehicle details and contact you shortly.');
+    }
+
     private function slides(): array
     {
         return [

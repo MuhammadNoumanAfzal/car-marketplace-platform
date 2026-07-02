@@ -13,6 +13,16 @@
             <a href="{{ route('home') }}#inventory" class="header-link">Inventory</a>
 
             <div class="header-dropdown">
+                <a href="{{ route('services.shipping') }}" class="header-link {{ request()->routeIs('services.shipping', 'services.consignment') ? 'is-active' : '' }}">
+                    <span>Services</span>
+                </a>
+                <div class="header-dropdown__menu">
+                    <a href="{{ route('services.shipping') }}" class="header-dropdown__item">Vehicle Shipping</a>
+                    <a href="{{ route('services.consignment') }}" class="header-dropdown__item">Consignment</a>
+                </div>
+            </div>
+
+            <div class="header-dropdown">
                 <a href="{{ route('about') }}" class="header-link {{ request()->routeIs('about', 'testimonials', 'directions') ? 'is-active' : '' }}">
                     <span>About Us</span>
                 </a>
