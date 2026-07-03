@@ -208,15 +208,24 @@
   }
 
   .inventory-card-showcase__image-wrap {
+    @apply relative block overflow-hidden;
     aspect-ratio: 1.08 / 0.88;
   }
 
   .inventory-card-showcase__image {
-    @apply h-full w-full object-cover;
+    @apply h-full w-full object-cover transition duration-500;
+  }
+
+  .inventory-card-showcase__overlay {
+    @apply absolute inset-0 flex items-center justify-center bg-black/35 opacity-0 transition duration-300;
+  }
+
+  .inventory-card-showcase__overlay-button {
+    @apply inline-flex items-center justify-center rounded-[14px] bg-white px-6 py-3 text-sm font-semibold text-neutral-950 shadow-[0_18px_40px_rgba(0,0,0,0.22)] transition;
   }
 
   .inventory-card-showcase__body {
-    @apply px-5 py-5 sm:px-6;
+    @apply block px-5 py-5 sm:px-6;
   }
 
   .inventory-card-showcase__heading {
@@ -257,6 +266,293 @@
 
   .inventory-card-showcase__meta {
     @apply flex items-center justify-between gap-4 border-t border-white/10 px-5 py-4 text-sm text-zinc-400 sm:px-6;
+  }
+
+  .inventory-card-showcase:hover .inventory-card-showcase__overlay {
+    @apply opacity-100;
+  }
+
+  .inventory-card-showcase:hover .inventory-card-showcase__image {
+    transform: scale(1.03);
+  }
+
+  .inventory-page-shell {
+    @apply space-y-8;
+  }
+
+  .inventory-page-head {
+    @apply flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .inventory-page-title {
+    @apply mt-3 font-display text-2xl font-semibold text-white sm:text-3xl;
+  }
+
+  .sold-card {
+    @apply overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.98),rgba(8,8,10,0.98))];
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .sold-card__topbar {
+    @apply flex flex-wrap items-center justify-center gap-5 border-b border-white/10 bg-white px-4 py-3 text-xs font-semibold text-neutral-900;
+  }
+
+  .sold-card__media {
+    @apply relative block overflow-hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .sold-card__image {
+    @apply h-full w-full object-cover;
+  }
+
+  .sold-card__overlay {
+    @apply absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition duration-300;
+  }
+
+  .sold-card__stamp {
+    position: absolute;
+    top: 2.65rem;
+    left: -3.4rem;
+    width: 18rem;
+    transform: rotate(-36deg);
+    background: rgba(190, 18, 60, 0.78);
+    color: #fff;
+    text-align: center;
+    font-family: theme('fontFamily.display');
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    padding: 0.45rem 0;
+  }
+
+  .sold-card__button {
+    @apply relative z-10 inline-flex items-center justify-center rounded-[14px] bg-white px-6 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-zinc-100;
+  }
+
+  .sold-card__body {
+    @apply block px-5 py-5 sm:px-6;
+  }
+
+  .sold-card__title {
+    @apply font-display text-2xl font-semibold text-white;
+  }
+
+  .sold-card__price {
+    @apply mt-3 text-sm font-medium text-zinc-300;
+  }
+
+  .sold-card__meta {
+    @apply flex items-center justify-between gap-4 border-t border-white/10 px-5 py-4 text-sm text-zinc-400 sm:px-6;
+  }
+
+  .sold-card:hover .sold-card__overlay {
+    @apply opacity-100;
+  }
+
+  .sold-card:hover .sold-card__image {
+    transform: scale(1.03);
+  }
+
+  .vehicle-detail-shell {
+    @apply space-y-6;
+  }
+
+  .vehicle-detail-back {
+    @apply inline-flex items-center gap-3 text-sm font-semibold text-zinc-300 transition hover:text-white;
+  }
+
+  .vehicle-detail-grid {
+    @apply grid gap-6 xl:grid-cols-[320px_1fr];
+  }
+
+  .vehicle-detail-sidebar {
+    @apply xl:sticky xl:top-28 xl:self-start;
+  }
+
+  .vehicle-detail-sidebar__card {
+    @apply rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(20,20,22,0.98),rgba(8,8,10,0.98))] p-5 sm:p-6;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .vehicle-detail-sidebar__title {
+    @apply mt-4 font-display text-3xl font-semibold leading-tight text-white;
+  }
+
+  .vehicle-detail-sidebar__trim {
+    @apply mt-2 text-sm font-medium uppercase tracking-[0.18em] text-zinc-400;
+  }
+
+  .vehicle-detail-price-card {
+    @apply mt-6 rounded-[22px] border border-ember/20 bg-ember/10 px-5 py-5;
+  }
+
+  .vehicle-detail-price-card__label {
+    @apply block text-xs font-semibold uppercase tracking-[0.3em] text-zinc-300;
+  }
+
+  .vehicle-detail-price-card__value {
+    @apply mt-3 block font-display text-3xl font-semibold text-white;
+  }
+
+  .vehicle-detail-price-card__meta {
+    @apply mt-2 text-sm text-zinc-300;
+  }
+
+  .vehicle-detail-specs {
+    @apply mt-6 space-y-3 rounded-[22px] border border-white/10 bg-white/[0.02] p-4;
+  }
+
+  .vehicle-detail-specs__row {
+    @apply flex items-start justify-between gap-4 border-b border-white/5 pb-3 last:border-b-0 last:pb-0;
+  }
+
+  .vehicle-detail-specs__row span {
+    @apply text-sm text-zinc-400;
+  }
+
+  .vehicle-detail-specs__row strong {
+    @apply max-w-[58%] text-right text-sm font-medium text-white;
+  }
+
+  .vehicle-detail-actions {
+    @apply mt-6 space-y-3;
+  }
+
+  .vehicle-detail-actions__secondary {
+    @apply inline-flex w-full items-center justify-center rounded-[16px] border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5;
+  }
+
+  .vehicle-detail-content {
+    @apply space-y-6;
+  }
+
+  .vehicle-detail-gallery {
+    @apply rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(20,20,22,0.98),rgba(8,8,10,0.98))] p-4 sm:p-5;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .vehicle-detail-gallery__hero {
+    @apply relative overflow-hidden rounded-[24px];
+    aspect-ratio: 1.25 / 0.74;
+  }
+
+  .vehicle-detail-gallery__hero-image {
+    @apply h-full w-full object-cover;
+  }
+
+  .vehicle-detail-gallery__status {
+    @apply absolute left-5 top-5 rounded-full border border-ember/20 bg-ember/90 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-white;
+  }
+
+  .vehicle-detail-gallery__thumbs {
+    @apply mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4;
+  }
+
+  .vehicle-detail-gallery__thumb {
+    @apply overflow-hidden rounded-[18px] border border-white/10 bg-black/20;
+    aspect-ratio: 1.1 / 0.84;
+  }
+
+  .vehicle-detail-gallery__thumb-image {
+    @apply h-full w-full object-cover;
+  }
+
+  .vehicle-detail-tabs {
+    @apply sticky top-20 z-20 flex overflow-x-auto border-y border-white/10 bg-black/85 backdrop-blur-md;
+  }
+
+  .vehicle-detail-tabs__link {
+    @apply relative whitespace-nowrap px-6 py-4 text-sm font-medium text-zinc-400 transition hover:text-white;
+  }
+
+  .vehicle-detail-tabs__link::after {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 0;
+    height: 2px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  .vehicle-detail-tabs__link.is-active {
+    @apply text-white;
+  }
+
+  .vehicle-detail-tabs__link.is-active::after {
+    background: #e11d2e;
+  }
+
+  .vehicle-detail-panels {
+    @apply space-y-6;
+  }
+
+  .vehicle-detail-panel {
+    @apply rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.98),rgba(8,8,10,0.98))] p-5 sm:p-6;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .vehicle-detail-panel__eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.3em] text-ember;
+  }
+
+  .vehicle-detail-panel__copy {
+    @apply mt-4 max-w-4xl text-sm leading-8 text-zinc-300;
+  }
+
+  .vehicle-detail-feature-grid {
+    @apply mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .vehicle-detail-feature {
+    @apply rounded-[18px] border border-white/10 bg-white/[0.03] px-4 py-4 text-sm text-zinc-200;
+  }
+
+  .vehicle-detail-photo-grid {
+    @apply mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .vehicle-detail-photo-grid__item {
+    @apply overflow-hidden rounded-[18px] border border-white/10 bg-black/20;
+    aspect-ratio: 1.08 / 0.82;
+  }
+
+  .vehicle-detail-photo-grid__image {
+    @apply h-full w-full object-cover;
+  }
+
+  .vehicle-detail-finance-grid {
+    @apply mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .vehicle-detail-finance-card {
+    @apply rounded-[20px] border border-ember/15 bg-ember/5 px-4 py-4;
+  }
+
+  .vehicle-detail-finance-card__label {
+    @apply block text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400;
+  }
+
+  .vehicle-detail-finance-card__value {
+    @apply mt-3 block font-display text-xl font-semibold text-white;
+  }
+
+  .vehicle-detail-contact-grid {
+    @apply mt-4 grid gap-4 sm:grid-cols-2;
+  }
+
+  .vehicle-detail-contact-card {
+    @apply rounded-[20px] border border-white/10 bg-white/[0.03] px-5 py-5 transition hover:border-ember/30 hover:bg-white/[0.05];
+  }
+
+  .vehicle-detail-contact-card__title {
+    @apply block font-display text-xl font-semibold text-white;
+  }
+
+  .vehicle-detail-contact-card__copy {
+    @apply mt-3 block text-sm leading-7 text-zinc-300;
   }
 
   .content-card {

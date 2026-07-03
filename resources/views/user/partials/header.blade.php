@@ -10,7 +10,16 @@
 
         <nav class="hidden items-center gap-8 text-sm font-medium text-zinc-200 lg:flex">
             <a href="{{ route('home') }}" class="header-link {{ request()->routeIs('home') ? 'is-active' : '' }}">Home</a>
-            <a href="{{ route('home') }}#inventory" class="header-link">Inventory</a>
+
+            <div class="header-dropdown">
+                <a href="{{ route('inventory.all') }}" class="header-link {{ request()->routeIs('inventory.all', 'inventory.sold') ? 'is-active' : '' }}">
+                    <span>Inventory</span>
+                </a>
+                <div class="header-dropdown__menu">
+                    <a href="{{ route('inventory.all') }}" class="header-dropdown__item">All Inventory</a>
+                    <a href="{{ route('inventory.sold') }}" class="header-dropdown__item">Sold Inventory</a>
+                </div>
+            </div>
 
             <div class="header-dropdown">
                 <a href="{{ route('services.shipping') }}" class="header-link {{ request()->routeIs('services.shipping', 'services.consignment') ? 'is-active' : '' }}">
@@ -38,7 +47,7 @@
         </nav>
 
         <div class="flex items-center gap-3">
-            <a href="{{ route('home') }}#inventory" class="hidden rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5 sm:inline-flex">Explore Cars</a>
+            <a href="{{ route('inventory.all') }}" class="hidden rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5 sm:inline-flex">Explore Cars</a>
             <a href="{{ route('appointment') }}#quick-contact" class="inline-flex rounded-full bg-ember px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-red-700">Book a Call</a>
         </div>
     </div>

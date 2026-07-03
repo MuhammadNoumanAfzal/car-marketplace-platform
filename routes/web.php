@@ -18,6 +18,10 @@ use App\Http\Controllers\Admin\SizeController;
 
 Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
+    Route::get('/inventory', 'inventory')->name('inventory.all');
+    Route::get('/inventory/sold', 'soldInventory')->name('inventory.sold');
+    Route::get('/inventory/sold/{stock}', 'soldInventoryDetail')->name('inventory.sold.detail');
+    Route::get('/inventory/{stock}', 'inventoryDetail')->name('inventory.detail');
     Route::get('/about-us', 'about')->name('about');
     Route::get('/testimonials', 'testimonials')->name('testimonials');
     Route::get('/directions', 'directions')->name('directions');

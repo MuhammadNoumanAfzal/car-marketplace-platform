@@ -21,6 +21,36 @@ class PageController extends Controller
         ]);
     }
 
+    public function inventory(): View
+    {
+        return view('user.inventory.allInventory', [
+            'filters' => $this->inventoryFilters(),
+            'featuredInventory' => $this->featuredInventory(),
+        ]);
+    }
+
+    public function soldInventory(): View
+    {
+        return view('user.inventory.soldInventory', [
+            'filters' => $this->inventoryFilters(),
+            'soldInventory' => $this->soldInventoryData(),
+        ]);
+    }
+
+    public function inventoryDetail(string $stock): View
+    {
+        return view('user.inventory.detail', [
+            'vehicle' => $this->findInventoryVehicle($stock, false),
+        ]);
+    }
+
+    public function soldInventoryDetail(string $stock): View
+    {
+        return view('user.inventory.detail', [
+            'vehicle' => $this->findInventoryVehicle($stock, true),
+        ]);
+    }
+
     public function about(): View
     {
         return view('user.about.about', [
@@ -311,6 +341,7 @@ class PageController extends Controller
                 'year' => '2020',
                 'make' => 'Toyota',
                 'model' => 'Sequoia Platinum',
+                'trim' => 'Platinum',
                 'price' => '$42,900',
                 'doc_fee' => '$367',
                 'filing_fee' => '$99',
@@ -319,11 +350,35 @@ class PageController extends Controller
                 'mileage' => '67,420',
                 'stock' => 'NMU20481',
                 'image' => 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => '5TDJY5G19LS20481',
+                'engine' => '5.7L V8',
+                'transmission' => 'Automatic',
+                'drivetrain' => '4WD',
+                'exterior' => 'Magnetic Gray',
+                'interior' => 'Black Leather',
+                'fuel' => 'Gasoline',
+                'status' => 'available',
+                'description' => 'A full-size SUV with premium seating, confident road presence, and the kind of clean presentation buyers expect from a serious showroom.',
+                'features' => [
+                    'Heated and ventilated front seats',
+                    'Premium JBL audio',
+                    'Third-row seating',
+                    'Adaptive cruise control',
+                    'Navigation and surround camera',
+                    'Power moonroof',
+                ],
             ],
             [
                 'year' => '2021',
                 'make' => 'Mercedes-Benz',
                 'model' => 'GLE 350',
+                'trim' => 'GLE 350',
                 'price' => '$48,500',
                 'doc_fee' => '$367',
                 'filing_fee' => '$99',
@@ -332,11 +387,35 @@ class PageController extends Controller
                 'mileage' => '38,155',
                 'stock' => 'NMU21834',
                 'image' => 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => '4JGFB4KB4MA21834',
+                'engine' => '2.0L Turbo I4',
+                'transmission' => '9-Speed Automatic',
+                'drivetrain' => 'RWD',
+                'exterior' => 'Polar White',
+                'interior' => 'Macchiato Beige',
+                'fuel' => 'Gasoline',
+                'status' => 'available',
+                'description' => 'Balanced luxury, quiet cabin refinement, and a crisp digital cockpit make this GLE an easy fit for buyers wanting modern comfort and understated presence.',
+                'features' => [
+                    'Panoramic sunroof',
+                    'MBUX dual-screen cockpit',
+                    'Blind spot assist',
+                    'Wireless charging',
+                    'Power liftgate',
+                    'Burmester surround sound',
+                ],
             ],
             [
                 'year' => '2022',
                 'make' => 'BMW',
                 'model' => 'X5 xDrive40i',
+                'trim' => 'xDrive40i',
                 'price' => '$56,800',
                 'doc_fee' => '$367',
                 'filing_fee' => '$99',
@@ -345,7 +424,193 @@ class PageController extends Controller
                 'mileage' => '24,910',
                 'stock' => 'NMU22792',
                 'image' => 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => '5UXCR6C08N9A22792',
+                'engine' => '3.0L Turbo I6',
+                'transmission' => '8-Speed Sport Automatic',
+                'drivetrain' => 'AWD',
+                'exterior' => 'Carbon Black',
+                'interior' => 'Cognac Vernasca',
+                'fuel' => 'Gasoline',
+                'status' => 'available',
+                'description' => 'A sharper driver-focused SUV with strong turbo six performance, premium materials, and a cabin that feels composed, rich, and current.',
+                'features' => [
+                    'M Sport package',
+                    'Heated front and rear seats',
+                    'Gesture control',
+                    'Glass controls',
+                    'Harman Kardon audio',
+                    'Parking assistance package',
+                ],
             ],
+        ];
+    }
+
+    private function soldInventoryData(): array
+    {
+        return [
+            [
+                'year' => '2004',
+                'make' => 'Volvo',
+                'model' => 'S80',
+                'trim' => 'Limited',
+                'price' => 'Sold',
+                'mileage' => '27,179',
+                'stock' => 'YV1TS92D341347179',
+                'image' => 'https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => 'YV1TS92D341347179',
+                'engine' => '2.9L Inline-6',
+                'transmission' => 'Automatic',
+                'drivetrain' => 'FWD',
+                'exterior' => 'Silver Metallic',
+                'interior' => 'Taupe Leather',
+                'fuel' => 'Gasoline',
+                'status' => 'sold',
+                'description' => 'A clean executive sedan with classic Volvo comfort, soft leather trim, and the understated feel that made these cars such strong long-distance cruisers.',
+                'features' => [
+                    'Leather-appointed seating',
+                    'Premium wood trim',
+                    'Dual-zone climate control',
+                    'Power front seats',
+                    'Factory alloy wheels',
+                    'Cruise control',
+                ],
+            ],
+            [
+                'year' => '2018',
+                'make' => 'Ford',
+                'model' => 'Expedition Limited',
+                'trim' => 'Limited',
+                'price' => 'Sold',
+                'mileage' => '58,240',
+                'stock' => '1FMJU2AT4JEA58240',
+                'image' => 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => '1FMJU2AT4JEA58240',
+                'engine' => '3.5L EcoBoost V6',
+                'transmission' => '10-Speed Automatic',
+                'drivetrain' => '4WD',
+                'exterior' => 'Shadow Black',
+                'interior' => 'Ebony Leather',
+                'fuel' => 'Gasoline',
+                'status' => 'sold',
+                'description' => 'A high-capacity family SUV with strong towing capability, upscale second-row comfort, and the roomy layout buyers typically look for in this segment.',
+                'features' => [
+                    'Twin-panel moonroof',
+                    'Power folding third row',
+                    'Lane keep assist',
+                    'Tow package',
+                    'Heated and ventilated seats',
+                    'B&O sound system',
+                ],
+            ],
+            [
+                'year' => '2020',
+                'make' => 'Toyota',
+                'model' => 'Highlander XLE',
+                'trim' => 'XLE',
+                'price' => 'Sold',
+                'mileage' => '34,905',
+                'stock' => '5TDGZRAH1LS034905',
+                'image' => 'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => '5TDGZRAH1LS034905',
+                'engine' => '3.5L V6',
+                'transmission' => '8-Speed Automatic',
+                'drivetrain' => 'FWD',
+                'exterior' => 'Blueprint',
+                'interior' => 'Black SofTex',
+                'fuel' => 'Gasoline',
+                'status' => 'sold',
+                'description' => 'A versatile midsize SUV with clean styling, strong resale appeal, and the family-ready layout that keeps demand high in the used market.',
+                'features' => [
+                    'Second-row captain chairs',
+                    'Power liftgate',
+                    'Blind spot monitor',
+                    'Apple CarPlay',
+                    'Heated front seats',
+                    'Smart key entry',
+                ],
+            ],
+            [
+                'year' => '2019',
+                'make' => 'Lexus',
+                'model' => 'RX 350',
+                'trim' => 'Premium',
+                'price' => 'Sold',
+                'mileage' => '41,612',
+                'stock' => '2T2BZMCA3KC041612',
+                'image' => 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
+                ],
+                'vin' => '2T2BZMCA3KC041612',
+                'engine' => '3.5L V6',
+                'transmission' => '8-Speed Automatic',
+                'drivetrain' => 'AWD',
+                'exterior' => 'Matador Red',
+                'interior' => 'Parchment',
+                'fuel' => 'Gasoline',
+                'status' => 'sold',
+                'description' => 'A refined luxury crossover with a quiet cabin, smooth V6 power, and the polished design language Lexus buyers keep coming back for.',
+                'features' => [
+                    'Premium package',
+                    'Panoramic view monitor',
+                    'Mark Levinson audio',
+                    'Heated steering wheel',
+                    'Memory seating',
+                    'Power rear door',
+                ],
+            ],
+        ];
+    }
+
+    private function findInventoryVehicle(string $stock, bool $sold): array
+    {
+        $inventory = $sold ? $this->soldInventoryData() : $this->featuredInventory();
+
+        foreach ($inventory as $vehicle) {
+            if ($vehicle['stock'] === $stock) {
+                return $vehicle;
+            }
+        }
+
+        abort(404);
+    }
+
+    private function inventoryFilters(): array
+    {
+        return [
+            'years' => ['Year', '2024', '2023', '2022', '2021', '2020'],
+            'makes' => ['Make', 'Toyota', 'BMW', 'Mercedes-Benz', 'Ford', 'Volvo', 'Lexus'],
+            'models' => ['Model', 'Sequoia', 'GLE 350', 'X5 xDrive40i', 'S80', 'Expedition'],
+            'mileages' => ['Mileage', 'Under 10,000', 'Under 25,000', 'Under 50,000', 'Under 75,000'],
+            'trims' => ['Trim', 'Premium', 'Luxury', 'Sport', 'Platinum', 'Limited'],
+            'prices' => ['Any Price', '$25k - $50k', '$50k - $75k', '$75k - $100k', '$100k+'],
         ];
     }
 

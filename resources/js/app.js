@@ -67,6 +67,51 @@ sliders.forEach((slider) => {
     restartAutoPlay();
 });
 
+const detailTabs = document.querySelectorAll('[data-detail-tabs]');
+
+detailTabs.forEach((tabBar) => {
+    const links = Array.from(tabBar.querySelectorAll('[data-detail-tab-link]'));
+    const sections = links
+        .map((link) => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+
+    if (!links.length || !sections.length) {
+        return;
+    }
+
+    const setActiveLink = (id) => {
+        links.forEach((link) => {
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('is-active', isActive);
+        });
+    };
+
+    links.forEach((link) => {
+        link.addEventListener('click', () => {
+            const targetId = link.getAttribute('href').replace('#', '');
+            setActiveLink(targetId);
+        });
+    });
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            const visibleEntry = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+            if (visibleEntry?.target?.id) {
+                setActiveLink(visibleEntry.target.id);
+            }
+        },
+        {
+            rootMargin: '-25% 0px -55% 0px',
+            threshold: [0.2, 0.4, 0.6],
+        }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+});
+
 const carousels = document.querySelectorAll('[data-carousel]');
 
 carousels.forEach((carousel) => {

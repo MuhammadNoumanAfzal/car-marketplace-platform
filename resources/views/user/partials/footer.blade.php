@@ -16,7 +16,7 @@
                         </p>
 
                         <div class="footer-showcase__actions">
-                            <a href="{{ route('home') }}#inventory" class="hero-actions__primary">
+                            <a href="{{ route('inventory.all') }}" class="hero-actions__primary">
                                 <span>Browse Inventory</span>
                                 <span class="hero-actions__arrow">&#8594;</span>
                             </a>
@@ -80,7 +80,7 @@
                 <p class="footer-bottom__copy">&copy; {{ date('Y') }} Nitro Motors USA. Premium automotive presentation across the USA.</p>
                 <div class="footer-bottom__links">
                     <a href="{{ route('home') }}">Home</a>
-                    <a href="{{ route('home') }}#inventory">Inventory</a>
+                    <a href="{{ route('inventory.all') }}">Inventory</a>
                     <a href="{{ route('about') }}">About Us</a>
                     <a href="{{ route('contact') }}">Contact</a>
                 </div>
