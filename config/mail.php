@@ -103,7 +103,7 @@ return [
     ],
 
     'contact_recipient' => [
-        'address' => env('CONTACT_RECIPIENT_EMAIL', 'nitroo@gmail.com'),
+        'address' => env('CONTACT_RECIPIENT_EMAIL', 'info@nitromotorsusa.com'),
         'name' => env('CONTACT_RECIPIENT_NAME', 'Nitro Motors USA'),
     ],
 

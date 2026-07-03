@@ -39,7 +39,7 @@ class SeoSetting extends Model
                 'canonical_base_url' => config('app.url'),
                 'business_name' => 'Nitro Motors USA',
                 'business_phone' => '+1 (305) 555-0147',
-                'business_email' => 'nitroo@gmail.com',
+                'business_email' => 'info@nitromotorsusa.com',
                 'business_address' => '1450 NW 79th Avenue, Miami, FL',
                 'robots_directive' => 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
                 'enable_indexing' => true,

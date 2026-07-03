@@ -22,7 +22,7 @@
 
                 <div class="contact-panel__section">
                     <p class="contact-panel__eyebrow">Reach Us</p>
-                    <p class="contact-panel__copy">Phone: +1 (305) 555-0147<br>Email: nitroo@gmail.com</p>
+                    <p class="contact-panel__copy">Phone: +1 (305) 555-0147<br>Email: info@nitromotorsusa.com</p>
                 </div>
 
                 <div class="contact-panel__section">

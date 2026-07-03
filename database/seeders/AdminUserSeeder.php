@@ -10,7 +10,7 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = env('ADMIN_EMAIL', 'nitroo@gmail.com');
+        $email = env('ADMIN_EMAIL', 'info@nitromotorsusa.com');
 
         User::updateOrCreate(
             ['email' => $email],

@@ -167,7 +167,7 @@ class PageController extends Controller
 
         try {
             $contactRecipient = config('mail.contact_recipient', [
-                'address' => 'nitroo@gmail.com',
+                'address' => 'info@nitromotorsusa.com',
                 'name' => 'Nitro Motors USA',
             ]);
 
@@ -175,7 +175,7 @@ class PageController extends Controller
                 'inquiry' => $validated,
             ], function ($message) use ($validated, $contactRecipient) {
                 $message
-                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->to($contactRecipient['address'] ?? 'info@nitromotorsusa.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
                     ->replyTo($validated['email'], $validated['name'])
                     ->subject('New Nitro Motors USA contact inquiry: ' . $validated['topic']);
             });
@@ -238,7 +238,7 @@ class PageController extends Controller
 
         try {
             $contactRecipient = config('mail.contact_recipient', [
-                'address' => 'nitroo@gmail.com',
+                'address' => 'info@nitromotorsusa.com',
                 'name' => 'Nitro Motors USA',
             ]);
 
@@ -246,7 +246,7 @@ class PageController extends Controller
                 'appointment' => $validated,
             ], function ($message) use ($validated, $contactRecipient) {
                 $message
-                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->to($contactRecipient['address'] ?? 'info@nitromotorsusa.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
                     ->replyTo($validated['email'], $validated['name'])
                     ->subject('New Nitro Motors USA appointment request: ' . $validated['appointment_type']);
             });
@@ -310,7 +310,7 @@ class PageController extends Controller
 
         try {
             $contactRecipient = config('mail.contact_recipient', [
-                'address' => 'nitroo@gmail.com',
+                'address' => 'info@nitromotorsusa.com',
                 'name' => 'Nitro Motors USA',
             ]);
 
@@ -318,7 +318,7 @@ class PageController extends Controller
                 'shipping' => $validated,
             ], function ($message) use ($validated, $contactRecipient) {
                 $message
-                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->to($contactRecipient['address'] ?? 'info@nitromotorsusa.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
                     ->replyTo($validated['email'], $validated['name'])
                     ->subject('New Nitro Motors USA shipping request: ' . $validated['transport_type']);
             });
@@ -394,7 +394,7 @@ class PageController extends Controller
 
         try {
             $contactRecipient = config('mail.contact_recipient', [
-                'address' => 'nitroo@gmail.com',
+                'address' => 'info@nitromotorsusa.com',
                 'name' => 'Nitro Motors USA',
             ]);
 
@@ -402,7 +402,7 @@ class PageController extends Controller
                 'requestData' => $validated,
             ], function ($message) use ($validated, $contactRecipient) {
                 $message
-                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->to($contactRecipient['address'] ?? 'info@nitromotorsusa.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
                     ->replyTo($validated['email'], $validated['first_name'] . ' ' . $validated['last_name'])
                     ->subject('New Nitro Motors USA consignment request: ' . $validated['vehicle_year'] . ' ' . $validated['make'] . ' ' . $validated['model']);
             });
