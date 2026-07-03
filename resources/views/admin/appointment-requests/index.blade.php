@@ -119,6 +119,45 @@
             color: #334155;
             line-height: 1.6;
         }
+
+        .appointment-table-panel .dataTables_wrapper {
+            color: #31519b;
+        }
+
+        .appointment-table-panel .dataTables_length,
+        .appointment-table-panel .dataTables_filter {
+            padding: 16px 18px 0;
+            color: #31519b;
+            font-weight: 500;
+        }
+
+        .appointment-table-panel .dataTables_length select,
+        .appointment-table-panel .dataTables_filter input {
+            min-height: 40px;
+            border-radius: 10px;
+            border: 1px solid #c8d8ff !important;
+            background: #ffffff !important;
+            color: #0b1f4d !important;
+            box-shadow: none !important;
+        }
+
+        .appointment-table-panel .dataTables_filter input {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .appointment-table-panel .dataTables_length select:focus,
+        .appointment-table-panel .dataTables_filter input:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 0.12rem rgba(37, 99, 235, 0.14) !important;
+            outline: none;
+        }
+
+        .appointment-table-panel .dataTables_info,
+        .appointment-table-panel .dataTables_paginate {
+            padding: 14px 18px 18px;
+            color: #47639d !important;
+        }
     </style>
 @endsection
 

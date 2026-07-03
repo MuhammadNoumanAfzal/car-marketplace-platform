@@ -4,16 +4,16 @@
 @section('meta_description', 'View details for the ' . $vehicle['year'] . ' ' . $vehicle['make'] . ' ' . $vehicle['model'] . ' at Nitro Motors USA.')
 
 @section('content')
-    <section class="relative z-10 bg-asphalt pb-16 pt-32 sm:pt-36">
+    <section class="relative z-10 bg-asphalt pb-16 pt-32 sm:pt-36" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="vehicle-detail-shell">
-                <a href="{{ $vehicle['status'] === 'sold' ? route('inventory.sold') : route('inventory.all') }}" class="vehicle-detail-back">
+                <a href="{{ $vehicle['status'] === 'sold' ? route('inventory.sold') : route('inventory.all') }}" class="vehicle-detail-back reveal-card" data-reveal>
                     <span>&#8592;</span>
                     <span>Back To {{ $vehicle['status'] === 'sold' ? 'Sold Inventory' : 'Inventory' }}</span>
                 </a>
 
                 <div class="vehicle-detail-grid">
-                    <aside class="vehicle-detail-sidebar">
+                    <aside class="vehicle-detail-sidebar reveal-card" data-reveal data-reveal-delay="70">
                         <div class="vehicle-detail-sidebar__card">
                             <p class="section-label text-xs sm:text-sm">{{ $vehicle['status'] === 'sold' ? 'Recently Sold' : 'Available Now' }}</p>
                             <h1 class="vehicle-detail-sidebar__title">{{ $vehicle['year'] }} {{ $vehicle['make'] }} {{ $vehicle['model'] }}</h1>
@@ -49,7 +49,7 @@
                     </aside>
 
                     <div class="vehicle-detail-content">
-                        <div class="vehicle-detail-gallery">
+                        <div class="vehicle-detail-gallery reveal-card" data-reveal data-reveal-delay="110">
                             <div class="vehicle-detail-gallery__hero">
                                 <img src="{{ $vehicle['gallery'][0] }}" alt="{{ $vehicle['year'] }} {{ $vehicle['make'] }} {{ $vehicle['model'] }}" class="vehicle-detail-gallery__hero-image">
                                 @if ($vehicle['status'] === 'sold')
@@ -66,7 +66,7 @@
                             </div>
                         </div>
 
-                        <nav class="vehicle-detail-tabs" data-detail-tabs>
+                        <nav class="vehicle-detail-tabs reveal-card" data-detail-tabs data-reveal data-reveal-delay="150">
                             <a href="#description" class="vehicle-detail-tabs__link is-active" data-detail-tab-link>Description</a>
                             <a href="#features" class="vehicle-detail-tabs__link" data-detail-tab-link>Features</a>
                             <a href="#photos" class="vehicle-detail-tabs__link" data-detail-tab-link>Photos</a>
@@ -75,12 +75,12 @@
                         </nav>
 
                         <div class="vehicle-detail-panels">
-                            <section id="description" class="vehicle-detail-panel" data-detail-tab-section>
+                            <section id="description" class="vehicle-detail-panel reveal-card" data-detail-tab-section data-reveal>
                                 <p class="vehicle-detail-panel__eyebrow">Description</p>
                                 <p class="vehicle-detail-panel__copy">{{ $vehicle['description'] }}</p>
                             </section>
 
-                            <section id="features" class="vehicle-detail-panel" data-detail-tab-section>
+                            <section id="features" class="vehicle-detail-panel reveal-card" data-detail-tab-section data-reveal>
                                 <p class="vehicle-detail-panel__eyebrow">Highlights</p>
                                 <div class="vehicle-detail-feature-grid">
                                     @foreach ($vehicle['features'] as $feature)
@@ -89,7 +89,7 @@
                                 </div>
                             </section>
 
-                            <section id="photos" class="vehicle-detail-panel" data-detail-tab-section>
+                            <section id="photos" class="vehicle-detail-panel reveal-card" data-detail-tab-section data-reveal>
                                 <p class="vehicle-detail-panel__eyebrow">Photos</p>
                                 <div class="vehicle-detail-photo-grid">
                                     @foreach ($vehicle['gallery'] as $image)
@@ -100,7 +100,7 @@
                                 </div>
                             </section>
 
-                            <section id="finance" class="vehicle-detail-panel" data-detail-tab-section>
+                            <section id="finance" class="vehicle-detail-panel reveal-card" data-detail-tab-section data-reveal>
                                 <p class="vehicle-detail-panel__eyebrow">Finance</p>
                                 <div class="vehicle-detail-finance-grid">
                                     <div class="vehicle-detail-finance-card">
@@ -119,7 +119,7 @@
                                 <p class="vehicle-detail-panel__copy">We can help with financing guidance, trade-in coordination, and remote paperwork support so the purchase feels organized from first inquiry to delivery.</p>
                             </section>
 
-                            <section id="contact" class="vehicle-detail-panel" data-detail-tab-section>
+                            <section id="contact" class="vehicle-detail-panel reveal-card" data-detail-tab-section data-reveal>
                                 <p class="vehicle-detail-panel__eyebrow">Contact Us</p>
                                 <div class="vehicle-detail-contact-grid">
                                     <a href="{{ route('contact') }}" class="vehicle-detail-contact-card">
