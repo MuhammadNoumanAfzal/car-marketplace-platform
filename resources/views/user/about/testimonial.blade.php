@@ -11,11 +11,11 @@
         'media' => "linear-gradient(135deg, rgba(10,10,10,0.24), rgba(10,10,10,0.68)), url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=1400&q=80')",
     ])
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="grid gap-5 lg:grid-cols-2">
                 @foreach ($featuredReviews as $review)
-                    <article class="featured-quote">
+                    <article class="featured-quote reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 110 }}">
                         <div class="flex items-center gap-1 text-amber-300">
                             <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
                         </div>
@@ -33,14 +33,14 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="section-heading section-heading--compact">
+            <div class="section-heading section-heading--compact reveal-card" data-reveal>
                 <p class="section-label">Client Voices</p>
                 <h2 class="section-title mt-4">A wider look at what customers say after working with us.</h2>
             </div>
 
-            <div class="testimonial-slider" data-carousel>
+            <div class="testimonial-slider reveal-card" data-carousel data-reveal data-reveal-delay="90">
                 <div class="testimonial-slider__viewport overflow-hidden">
                     <div class="testimonial-slider__track" data-carousel-track>
                         @foreach ($reviews as $review)

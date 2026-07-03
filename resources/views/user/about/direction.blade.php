@@ -11,10 +11,10 @@
         'media' => "linear-gradient(135deg, rgba(10,10,10,0.22), rgba(10,10,10,0.64)), url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1400&q=80')",
     ])
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="location-page-grid">
-                <div class="map-panel">
+                <div class="map-panel reveal-card" data-reveal>
                     <div class="map-panel__canvas">
                         <div class="map-panel__overlay">
                             <p class="map-panel__label">Google Maps</p>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <div class="direction-panel">
+                <div class="direction-panel reveal-card" data-reveal data-reveal-delay="90">
                     <div class="direction-panel__group">
                         <p class="direction-panel__eyebrow">Showroom</p>
                         <h3 class="direction-panel__title">Nitro Motors USA</h3>
@@ -33,7 +33,7 @@
 
                     <div class="direction-panel__group">
                         <p class="direction-panel__eyebrow">Contact</p>
-                        <p class="direction-panel__copy">Phone: +1 (305) 555-0147<br>Email: sales@nitromotorsusa.com</p>
+                        <p class="direction-panel__copy">Phone: +1 (305) 555-0147<br>Email: info@nitromotorsusa.com</p>
                     </div>
 
                     <div class="direction-panel__group">
@@ -45,16 +45,16 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-                <div class="route-card">
+                <div class="route-card reveal-card" data-reveal>
                     <p class="route-card__eyebrow">Step By Step</p>
                     <h2 class="route-card__title">The easiest way to reach the showroom.</h2>
 
                     <div class="mt-6 space-y-4">
                         @foreach ($directions as $direction)
-                            <div class="route-step">
+                            <div class="route-step reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 70 }}">
                                 <div class="route-step__count">0{{ $loop->iteration }}</div>
                                 <p class="route-step__copy">{{ $direction }}</p>
                             </div>
@@ -62,13 +62,13 @@
                     </div>
                 </div>
 
-                <div class="route-card">
+                <div class="route-card reveal-card" data-reveal data-reveal-delay="110">
                     <p class="route-card__eyebrow">Nearby Landmarks</p>
                     <h2 class="route-card__title">Useful reference points before you arrive.</h2>
 
                     <div class="mt-6 grid gap-4">
                         @foreach ($landmarks as $landmark)
-                            <div class="landmark-pill">{{ $landmark }}</div>
+                            <div class="landmark-pill reveal-card" data-reveal data-reveal-delay="{{ 120 + ($loop->index * 65) }}">{{ $landmark }}</div>
                         @endforeach
                     </div>
                 </div>

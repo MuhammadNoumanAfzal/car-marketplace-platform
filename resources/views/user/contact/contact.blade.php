@@ -11,9 +11,9 @@
         'media' => "linear-gradient(135deg, rgba(10,10,10,0.22), rgba(10,10,10,0.64)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80')",
     ])
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto grid w-full max-w-[1600px] gap-5 px-4 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-12 xl:px-16">
-            <div class="contact-panel">
+            <div class="contact-panel reveal-card" data-reveal>
                 <div class="contact-panel__section">
                     <p class="contact-panel__eyebrow">Showroom</p>
                     <h2 class="contact-panel__title">Nitro Motors USA</h2>
@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div id="quick-contact" class="contact-form-card">
+            <div id="quick-contact" class="contact-form-card reveal-card" data-reveal data-reveal-delay="100">
                 <div class="section-heading section-heading--left mb-6">
                     <p class="section-label">Send A Message</p>
                     <h2 class="section-title mt-4">Tell us what you need and we will point you in the right direction.</h2>

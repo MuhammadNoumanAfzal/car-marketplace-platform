@@ -4,10 +4,10 @@
 @section('meta_description', 'Browse recently sold inventory at Nitro Motors USA.')
 
 @section('content')
-    <section class="relative z-10 bg-asphalt pb-16 pt-32 sm:pt-36">
+    <section class="relative z-10 bg-asphalt pb-16 pt-32 sm:pt-36" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="inventory-page-shell">
-                <form action="{{ route('inventory.sold') }}" method="GET" class="search-band rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8">
+                <form action="{{ route('inventory.sold') }}" method="GET" class="search-band reveal-card rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8" data-reveal>
                     <div class="grid gap-5 xl:grid-cols-[repeat(5,minmax(0,1fr))]">
                         <label class="block">
                             <span class="search-band__label">By Year</span>
@@ -75,7 +75,7 @@
                     </div>
                 </form>
 
-                <div class="inventory-page-head">
+                <div class="inventory-page-head reveal-card" data-reveal data-reveal-delay="70">
                     <div>
                         <p class="section-label text-sm sm:text-base">Recently Sold</p>
                         <h2 class="inventory-page-title">A look at vehicles that have already moved.</h2>
@@ -85,7 +85,7 @@
 
                 <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                     @forelse ($soldInventory as $vehicle)
-                        <article class="sold-card">
+                        <article class="sold-card reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 85 }}">
                             <div class="sold-card__topbar">
                                 <button type="button" class="inventory-card-showcase__utility">&#9734; Save</button>
                                 <button type="button" class="inventory-card-showcase__utility">&#9993; Text To Phone</button>
@@ -110,7 +110,7 @@
                             </a>
                         </article>
                     @empty
-                        <div class="rounded-[24px] border border-white/10 bg-white/[0.03] px-6 py-8 text-zinc-300 md:col-span-2 xl:col-span-4">
+                        <div class="reveal-card rounded-[24px] border border-white/10 bg-white/[0.03] px-6 py-8 text-zinc-300 md:col-span-2 xl:col-span-4" data-reveal data-reveal-delay="120">
                             No sold inventory matches these filters yet.
                         </div>
                     @endforelse

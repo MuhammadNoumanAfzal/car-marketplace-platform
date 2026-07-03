@@ -4,10 +4,10 @@
 @section('meta_description', 'Browse all available inventory at Nitro Motors USA.')
 
 @section('content')
-    <section class="relative z-10 bg-asphalt pb-16 pt-32 sm:pt-36">
+    <section class="relative z-10 bg-asphalt pb-16 pt-32 sm:pt-36" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="inventory-page-shell">
-                <form action="{{ route('inventory.all') }}" method="GET" class="search-band rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8">
+                <form action="{{ route('inventory.all') }}" method="GET" class="search-band reveal-card rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8" data-reveal>
                     <div class="grid gap-5 xl:grid-cols-[repeat(5,minmax(0,1fr))]">
                         <label class="block">
                             <span class="search-band__label">By Year</span>
@@ -75,7 +75,7 @@
                     </div>
                 </form>
 
-                <div class="inventory-page-head">
+                <div class="inventory-page-head reveal-card" data-reveal data-reveal-delay="70">
                     <div>
                         <p class="section-label text-sm sm:text-base">Available Now</p>
                         <h2 class="inventory-page-title">Shop every active vehicle in the showroom.</h2>
@@ -85,7 +85,7 @@
 
                 <div class="grid gap-5 xl:grid-cols-3">
                     @forelse ($featuredInventory as $vehicle)
-                        <article class="inventory-card-showcase">
+                        <article class="inventory-card-showcase reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 90 }}">
                             <div class="inventory-card-showcase__media">
                                 <div class="inventory-card-showcase__topbar">
                                     <button type="button" class="inventory-card-showcase__utility">&#9733; Save</button>
@@ -123,7 +123,7 @@
                             </a>
                         </article>
                     @empty
-                        <div class="rounded-[26px] border border-white/10 bg-white/[0.03] px-6 py-8 text-zinc-300 xl:col-span-3">
+                        <div class="reveal-card rounded-[26px] border border-white/10 bg-white/[0.03] px-6 py-8 text-zinc-300 xl:col-span-3" data-reveal data-reveal-delay="120">
                             No inventory matches these filters yet.
                         </div>
                     @endforelse
