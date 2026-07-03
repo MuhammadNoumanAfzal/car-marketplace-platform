@@ -30,6 +30,37 @@
             font-weight: 700;
         }
 
+        .admin-topbar-meta {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .admin-topbar-name {
+            font-weight: 600;
+        }
+
+        .admin-topbar-link,
+        .admin-topbar-button {
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 0 16px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            color: #ffffff !important;
+            text-decoration: none !important;
+            background: rgba(255, 255, 255, 0.08);
+            font-weight: 700;
+        }
+
+        .admin-topbar-button {
+            cursor: pointer;
+        }
+
         .nav-left-sidebar.sidebar-dark {
             background: linear-gradient(180deg, #091833 0%, #102b5e 100%);
         }
@@ -90,6 +121,16 @@
         .page-breadcrumb .breadcrumb-item.active {
             background: transparent !important;
         }
+
+        @media (max-width: 767.98px) {
+            .admin-topbar-meta {
+                gap: 8px;
+            }
+
+            .admin-topbar-name {
+                display: none;
+            }
+        }
     </style>
 
     @yield('style')
@@ -99,7 +140,15 @@
     <div class="dashboard-main-wrapper">
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg fixed-top">
-                <a class="navbar-brand" href="{{ url('admin/dashboard') }}">Nitro Motors Admin</a>
+                <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Nitro Motors Admin</a>
+                <div class="admin-topbar-meta">
+                    <span class="admin-topbar-name">{{ auth()->user()->name ?? 'Admin' }}</span>
+                    <a href="{{ route('admin.account.edit') }}" class="admin-topbar-link">Account</a>
+                    <form method="POST" action="{{ route('admin.logout') }}" class="mb-0">
+                        @csrf
+                        <button type="submit" class="admin-topbar-button">Logout</button>
+                    </form>
+                </div>
             </nav>
         </div>
 
@@ -117,6 +166,11 @@
                             <li class="nav-item">
                                 <a class="nav-link @if ($active == 'dashboard') active @endif" href="{{ url('admin/dashboard') }}">
                                     <i class="fa fa-fw fa-home"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'account') active @endif" href="{{ route('admin.account.edit') }}">
+                                    <i class="fa fa-fw fa-user-cog"></i> Account Settings
                                 </a>
                             </li>
                             <li class="nav-item">
