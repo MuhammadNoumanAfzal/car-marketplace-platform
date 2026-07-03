@@ -150,6 +150,21 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'appointment-requests') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'appointment-requests' ? 'true' : 'false' }}"
+                                    data-target="#submenu-appointment-requests"
+                                    aria-controls="submenu-appointment-requests">
+                                    <i class="fa fa-fw fa-calendar"></i> Appointment Requests
+                                </a>
+                                <div id="submenu-appointment-requests" class="collapse submenu @if ($active == 'appointment-requests') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.appointment-requests.index') }}">View All</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>

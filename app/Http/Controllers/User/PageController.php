@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppointmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
 use Illuminate\Http\RedirectResponse;
@@ -231,11 +232,43 @@ class PageController extends Controller
             'notes' => ['nullable', 'string', 'max:1500'],
         ]);
 
-        logger()->info('Nitro Motors USA appointment request received.', $validated);
+        AppointmentRequest::create($validated);
 
-        return redirect()
-            ->route('appointment')
-            ->with('status', 'Your appointment request has been received. Our team will confirm your booking shortly.');
+        try {
+            $contactRecipient = config('mail.contact_recipient', [
+                'address' => 'nitroo@gmail.com',
+                'name' => 'Nitro Motors USA',
+            ]);
+
+            Mail::send('emails.appointment-request', [
+                'appointment' => $validated,
+            ], function ($message) use ($validated, $contactRecipient) {
+                $message
+                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->replyTo($validated['email'], $validated['name'])
+                    ->subject('New Nitro Motors USA appointment request: ' . $validated['appointment_type']);
+            });
+
+            logger()->info('Nitro Motors USA appointment request sent.', $validated);
+
+            return redirect()
+                ->route('appointment')
+                ->with('status', 'Your appointment request has been sent successfully.')
+                ->with('status_type', 'success')
+                ->with('status_title', 'Appointment Requested');
+        } catch (Throwable $exception) {
+            logger()->error('Nitro Motors USA appointment request failed to send.', [
+                'error' => $exception->getMessage(),
+                'payload' => $validated,
+            ]);
+
+            return redirect()
+                ->route('appointment')
+                ->withInput()
+                ->with('status', 'We could not send your appointment request right now. Please try again after mail setup is confirmed.')
+                ->with('status_type', 'error')
+                ->with('status_title', 'Request Failed');
+        }
     }
 
     public function shipping(): View

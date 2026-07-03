@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User\PageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AppointmentRequestController;
 use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
@@ -51,6 +52,12 @@ Route::prefix('admin/contact-inquiries')->controller(ContactInquiryController::c
     Route::get('/index', 'index')->name('admin.contact-inquiries.index');
     Route::get('/show/{contactInquiry}', 'show')->name('admin.contact-inquiries.show');
     Route::delete('/delete/{contactInquiry}', 'destroy')->name('admin.contact-inquiries.destroy');
+});
+
+Route::prefix('admin/appointment-requests')->controller(AppointmentRequestController::class)->group(function () {
+    Route::get('/index', 'index')->name('admin.appointment-requests.index');
+    Route::get('/show/{appointmentRequest}', 'show')->name('admin.appointment-requests.show');
+    Route::delete('/delete/{appointmentRequest}', 'destroy')->name('admin.appointment-requests.destroy');
 });
 
 

@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AppointmentRequest extends Model
+{
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'appointment_type',
+        'preferred_date',
+        'preferred_time',
+        'notes',
+    ];
+}
