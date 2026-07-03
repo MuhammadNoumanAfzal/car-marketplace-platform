@@ -53,44 +53,73 @@
 
     <section id="inventory" class="relative z-10 bg-asphalt pb-16 pt-10" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="search-band reveal-card reveal-card--hero-band rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8" data-reveal>
+            <form action="{{ route('inventory.all') }}" method="GET" class="search-band reveal-card reveal-card--hero-band rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8" data-reveal>
                 <div class="grid gap-5 xl:grid-cols-[repeat(5,minmax(0,1fr))]">
                     <label class="block">
                         <span class="search-band__label">By Year</span>
-                        <select class="search-band__field"><option>Year</option><option>2024</option><option>2023</option><option>2022</option></select>
+                        <select name="year" class="search-band__field">
+                            <option value="">Year</option>
+                            @foreach ($filters['years'] as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
                     </label>
                     <label class="block">
                         <span class="search-band__label">By Make</span>
-                        <select class="search-band__field"><option>Make</option><option>Porsche</option><option>BMW</option><option>Mercedes-Benz</option><option>Ford</option></select>
+                        <select name="make" class="search-band__field">
+                            <option value="">Make</option>
+                            @foreach ($filters['makes'] as $make)
+                                <option value="{{ $make }}">{{ $make }}</option>
+                            @endforeach
+                        </select>
                     </label>
                     <label class="block">
                         <span class="search-band__label">By Model</span>
-                        <select class="search-band__field"><option>Model</option><option>911 Carrera</option><option>X7 M60i</option><option>EQE SUV</option></select>
+                        <select name="model" class="search-band__field">
+                            <option value="">Model</option>
+                            @foreach ($filters['models'] as $model)
+                                <option value="{{ $model }}">{{ $model }}</option>
+                            @endforeach
+                        </select>
                     </label>
                     <label class="block">
                         <span class="search-band__label">By Mileage</span>
-                        <select class="search-band__field"><option>Mileage</option><option>Under 5,000</option><option>Under 10,000</option><option>Under 20,000</option></select>
+                        <select name="max_mileage" class="search-band__field">
+                            <option value="">Mileage</option>
+                            @foreach ($filters['mileages'] as $mileage)
+                                <option value="{{ $mileage['value'] }}">{{ $mileage['label'] }}</option>
+                            @endforeach
+                        </select>
                     </label>
                     <label class="block">
                         <span class="search-band__label">By Trim</span>
-                        <select class="search-band__field"><option>Trim</option><option>Premium</option><option>Sport</option><option>Luxury</option></select>
+                        <select name="trim" class="search-band__field">
+                            <option value="">Trim</option>
+                            @foreach ($filters['trims'] as $trim)
+                                <option value="{{ $trim }}">{{ $trim }}</option>
+                            @endforeach
+                        </select>
                     </label>
                 </div>
 
                 <div class="mt-5 grid gap-4 lg:grid-cols-[1.4fr_0.7fr_auto]">
                     <label class="block">
                         <span class="search-band__label">Search By Keyword</span>
-                        <input type="text" class="search-band__field" placeholder="Search by keyword">
+                        <input type="text" name="keyword" class="search-band__field" placeholder="Search by keyword">
                     </label>
                     <label class="block">
                         <span class="search-band__label">By Price</span>
-                        <select class="search-band__field"><option>Any Price</option><option>$25k - $50k</option><option>$50k - $100k</option><option>$100k+</option></select>
+                        <select name="price_range" class="search-band__field">
+                            @foreach ($filters['prices'] as $price)
+                                <option value="{{ $price['value'] }}">{{ $price['label'] }}</option>
+                            @endforeach
+                        </select>
                     </label>
                     <div class="flex items-end">
-                        <button class="search-band__button w-full lg:w-auto"><span class="text-2xl leading-none">&#9906;</span><span>Search</span></button>
+                        <button type="submit" class="search-band__button w-full lg:w-auto"><span class="text-2xl leading-none">&#9906;</span><span>Search</span></button>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="mt-8">
                 <div class="mb-6 flex items-end justify-between gap-4 reveal-card" data-reveal>
@@ -105,7 +134,7 @@
                 </div>
 
                 <div class="grid gap-5 xl:grid-cols-3">
-                    @foreach ($featuredInventory as $vehicle)
+                    @forelse ($featuredInventory as $vehicle)
                         <article class="inventory-card-showcase reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 90 }}">
                             <div class="inventory-card-showcase__media">
                                 <div class="inventory-card-showcase__topbar">
@@ -144,7 +173,11 @@
                                 <span>&#35; {{ $vehicle['stock'] }}</span>
                             </a>
                         </article>
-                    @endforeach
+                    @empty
+                        <div class="rounded-[26px] border border-white/10 bg-white/[0.03] px-6 py-8 text-zinc-300 xl:col-span-3">
+                            No featured inventory yet. Add vehicles from the admin panel and mark them as featured to show them here.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>

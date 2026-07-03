@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\SizeController;
 
 /*
@@ -33,6 +34,16 @@ Route::controller(PageController::class)->group(function () {
     Route::post('/services/shipping', 'sendShipping')->name('services.shipping.send');
     Route::get('/services/consignment', 'consignment')->name('services.consignment');
     Route::post('/services/consignment', 'sendConsignment')->name('services.consignment.send');
+});
+
+Route::prefix('admin/inventory')->controller(InventoryController::class)->group(function () {
+    Route::get('/index', 'index')->name('admin.inventory.index');
+    Route::get('/create', 'create')->name('admin.inventory.create');
+    Route::post('/store', 'store')->name('admin.inventory.store');
+    Route::get('/show/{inventory}', 'show')->name('admin.inventory.show');
+    Route::get('/edit/{inventory}', 'edit')->name('admin.inventory.edit');
+    Route::put('/update/{inventory}', 'update')->name('admin.inventory.update');
+    Route::delete('/delete/{inventory}', 'destroy')->name('admin.inventory.destroy');
 });
 
 

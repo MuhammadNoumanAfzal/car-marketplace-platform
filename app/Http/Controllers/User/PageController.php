@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Inventory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(): View
+    public function home(Request $request): View
     {
         return view('user.home', [
             'slides' => $this->slides(),
+            'filters' => $this->inventoryFilters('available'),
             'featuredInventory' => $this->featuredInventory(),
             'journeys' => $this->journeys(),
             'reasons' => $this->reasons(),
@@ -21,33 +24,47 @@ class PageController extends Controller
         ]);
     }
 
-    public function inventory(): View
+    public function inventory(Request $request): View
     {
+        $inventories = $this->inventoryQuery($request, 'available')
+            ->get()
+            ->map(fn (Inventory $inventory) => $this->presentInventory($inventory))
+            ->all();
+
         return view('user.inventory.allInventory', [
-            'filters' => $this->inventoryFilters(),
-            'featuredInventory' => $this->featuredInventory(),
+            'filters' => $this->inventoryFilters('available', $request),
+            'featuredInventory' => $inventories,
         ]);
     }
 
-    public function soldInventory(): View
+    public function soldInventory(Request $request): View
     {
+        $inventories = $this->inventoryQuery($request, 'sold')
+            ->get()
+            ->map(fn (Inventory $inventory) => $this->presentInventory($inventory))
+            ->all();
+
         return view('user.inventory.soldInventory', [
-            'filters' => $this->inventoryFilters(),
-            'soldInventory' => $this->soldInventoryData(),
+            'filters' => $this->inventoryFilters('sold', $request),
+            'soldInventory' => $inventories,
         ]);
     }
 
     public function inventoryDetail(string $stock): View
     {
         return view('user.inventory.detail', [
-            'vehicle' => $this->findInventoryVehicle($stock, false),
+            'vehicle' => $this->presentInventory(
+                Inventory::query()->where('status', 'available')->where('stock', $stock)->firstOrFail()
+            ),
         ]);
     }
 
     public function soldInventoryDetail(string $stock): View
     {
         return view('user.inventory.detail', [
-            'vehicle' => $this->findInventoryVehicle($stock, true),
+            'vehicle' => $this->presentInventory(
+                Inventory::query()->where('status', 'sold')->where('stock', $stock)->firstOrFail()
+            ),
         ]);
     }
 
@@ -336,282 +353,150 @@ class PageController extends Controller
 
     private function featuredInventory(): array
     {
+        return Inventory::query()
+            ->where('status', 'available')
+            ->where('is_featured', true)
+            ->latest()
+            ->take(3)
+            ->get()
+            ->map(fn (Inventory $inventory) => $this->presentInventory($inventory))
+            ->all();
+    }
+
+    private function inventoryFilters(string $status = 'available', ?Request $request = null): array
+    {
+        $query = Inventory::query()->where('status', $status);
+
         return [
-            [
-                'year' => '2020',
-                'make' => 'Toyota',
-                'model' => 'Sequoia Platinum',
-                'trim' => 'Platinum',
-                'price' => '$42,900',
-                'doc_fee' => '$367',
-                'filing_fee' => '$99',
-                'tag_fee' => '$27',
-                'total_price' => '$43,393',
-                'mileage' => '67,420',
-                'stock' => 'NMU20481',
-                'image' => 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => '5TDJY5G19LS20481',
-                'engine' => '5.7L V8',
-                'transmission' => 'Automatic',
-                'drivetrain' => '4WD',
-                'exterior' => 'Magnetic Gray',
-                'interior' => 'Black Leather',
-                'fuel' => 'Gasoline',
-                'status' => 'available',
-                'description' => 'A full-size SUV with premium seating, confident road presence, and the kind of clean presentation buyers expect from a serious showroom.',
-                'features' => [
-                    'Heated and ventilated front seats',
-                    'Premium JBL audio',
-                    'Third-row seating',
-                    'Adaptive cruise control',
-                    'Navigation and surround camera',
-                    'Power moonroof',
-                ],
+            'years' => (clone $query)->orderByDesc('year')->distinct()->pluck('year')->map(fn ($year) => (string) $year)->values()->all(),
+            'makes' => (clone $query)->orderBy('make')->distinct()->pluck('make')->values()->all(),
+            'models' => (clone $query)->orderBy('model')->distinct()->pluck('model')->values()->all(),
+            'trims' => (clone $query)->whereNotNull('trim')->where('trim', '!=', '')->orderBy('trim')->distinct()->pluck('trim')->values()->all(),
+            'mileages' => [
+                ['label' => 'Under 10,000', 'value' => '10000'],
+                ['label' => 'Under 25,000', 'value' => '25000'],
+                ['label' => 'Under 50,000', 'value' => '50000'],
+                ['label' => 'Under 75,000', 'value' => '75000'],
             ],
-            [
-                'year' => '2021',
-                'make' => 'Mercedes-Benz',
-                'model' => 'GLE 350',
-                'trim' => 'GLE 350',
-                'price' => '$48,500',
-                'doc_fee' => '$367',
-                'filing_fee' => '$99',
-                'tag_fee' => '$27',
-                'total_price' => '$48,993',
-                'mileage' => '38,155',
-                'stock' => 'NMU21834',
-                'image' => 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => '4JGFB4KB4MA21834',
-                'engine' => '2.0L Turbo I4',
-                'transmission' => '9-Speed Automatic',
-                'drivetrain' => 'RWD',
-                'exterior' => 'Polar White',
-                'interior' => 'Macchiato Beige',
-                'fuel' => 'Gasoline',
-                'status' => 'available',
-                'description' => 'Balanced luxury, quiet cabin refinement, and a crisp digital cockpit make this GLE an easy fit for buyers wanting modern comfort and understated presence.',
-                'features' => [
-                    'Panoramic sunroof',
-                    'MBUX dual-screen cockpit',
-                    'Blind spot assist',
-                    'Wireless charging',
-                    'Power liftgate',
-                    'Burmester surround sound',
-                ],
+            'prices' => [
+                ['label' => 'Any Price', 'value' => ''],
+                ['label' => '$25k - $50k', 'value' => '25000-50000'],
+                ['label' => '$50k - $75k', 'value' => '50000-75000'],
+                ['label' => '$75k - $100k', 'value' => '75000-100000'],
+                ['label' => '$100k+', 'value' => '100000+'],
             ],
-            [
-                'year' => '2022',
-                'make' => 'BMW',
-                'model' => 'X5 xDrive40i',
-                'trim' => 'xDrive40i',
-                'price' => '$56,800',
-                'doc_fee' => '$367',
-                'filing_fee' => '$99',
-                'tag_fee' => '$27',
-                'total_price' => '$57,293',
-                'mileage' => '24,910',
-                'stock' => 'NMU22792',
-                'image' => 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => '5UXCR6C08N9A22792',
-                'engine' => '3.0L Turbo I6',
-                'transmission' => '8-Speed Sport Automatic',
-                'drivetrain' => 'AWD',
-                'exterior' => 'Carbon Black',
-                'interior' => 'Cognac Vernasca',
-                'fuel' => 'Gasoline',
-                'status' => 'available',
-                'description' => 'A sharper driver-focused SUV with strong turbo six performance, premium materials, and a cabin that feels composed, rich, and current.',
-                'features' => [
-                    'M Sport package',
-                    'Heated front and rear seats',
-                    'Gesture control',
-                    'Glass controls',
-                    'Harman Kardon audio',
-                    'Parking assistance package',
-                ],
+            'selected' => [
+                'year' => (string) ($request?->query('year', '') ?? ''),
+                'make' => (string) ($request?->query('make', '') ?? ''),
+                'model' => (string) ($request?->query('model', '') ?? ''),
+                'max_mileage' => (string) ($request?->query('max_mileage', '') ?? ''),
+                'trim' => (string) ($request?->query('trim', '') ?? ''),
+                'keyword' => (string) ($request?->query('keyword', '') ?? ''),
+                'price_range' => (string) ($request?->query('price_range', '') ?? ''),
             ],
         ];
     }
 
-    private function soldInventoryData(): array
+    private function inventoryQuery(Request $request, string $status)
     {
-        return [
-            [
-                'year' => '2004',
-                'make' => 'Volvo',
-                'model' => 'S80',
-                'trim' => 'Limited',
-                'price' => 'Sold',
-                'mileage' => '27,179',
-                'stock' => 'YV1TS92D341347179',
-                'image' => 'https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => 'YV1TS92D341347179',
-                'engine' => '2.9L Inline-6',
-                'transmission' => 'Automatic',
-                'drivetrain' => 'FWD',
-                'exterior' => 'Silver Metallic',
-                'interior' => 'Taupe Leather',
-                'fuel' => 'Gasoline',
-                'status' => 'sold',
-                'description' => 'A clean executive sedan with classic Volvo comfort, soft leather trim, and the understated feel that made these cars such strong long-distance cruisers.',
-                'features' => [
-                    'Leather-appointed seating',
-                    'Premium wood trim',
-                    'Dual-zone climate control',
-                    'Power front seats',
-                    'Factory alloy wheels',
-                    'Cruise control',
-                ],
-            ],
-            [
-                'year' => '2018',
-                'make' => 'Ford',
-                'model' => 'Expedition Limited',
-                'trim' => 'Limited',
-                'price' => 'Sold',
-                'mileage' => '58,240',
-                'stock' => '1FMJU2AT4JEA58240',
-                'image' => 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => '1FMJU2AT4JEA58240',
-                'engine' => '3.5L EcoBoost V6',
-                'transmission' => '10-Speed Automatic',
-                'drivetrain' => '4WD',
-                'exterior' => 'Shadow Black',
-                'interior' => 'Ebony Leather',
-                'fuel' => 'Gasoline',
-                'status' => 'sold',
-                'description' => 'A high-capacity family SUV with strong towing capability, upscale second-row comfort, and the roomy layout buyers typically look for in this segment.',
-                'features' => [
-                    'Twin-panel moonroof',
-                    'Power folding third row',
-                    'Lane keep assist',
-                    'Tow package',
-                    'Heated and ventilated seats',
-                    'B&O sound system',
-                ],
-            ],
-            [
-                'year' => '2020',
-                'make' => 'Toyota',
-                'model' => 'Highlander XLE',
-                'trim' => 'XLE',
-                'price' => 'Sold',
-                'mileage' => '34,905',
-                'stock' => '5TDGZRAH1LS034905',
-                'image' => 'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => '5TDGZRAH1LS034905',
-                'engine' => '3.5L V6',
-                'transmission' => '8-Speed Automatic',
-                'drivetrain' => 'FWD',
-                'exterior' => 'Blueprint',
-                'interior' => 'Black SofTex',
-                'fuel' => 'Gasoline',
-                'status' => 'sold',
-                'description' => 'A versatile midsize SUV with clean styling, strong resale appeal, and the family-ready layout that keeps demand high in the used market.',
-                'features' => [
-                    'Second-row captain chairs',
-                    'Power liftgate',
-                    'Blind spot monitor',
-                    'Apple CarPlay',
-                    'Heated front seats',
-                    'Smart key entry',
-                ],
-            ],
-            [
-                'year' => '2019',
-                'make' => 'Lexus',
-                'model' => 'RX 350',
-                'trim' => 'Premium',
-                'price' => 'Sold',
-                'mileage' => '41,612',
-                'stock' => '2T2BZMCA3KC041612',
-                'image' => 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
-                    'https://images.unsplash.com/photo-1549399542-7e82138f2f59?auto=format&fit=crop&w=1200&q=80',
-                ],
-                'vin' => '2T2BZMCA3KC041612',
-                'engine' => '3.5L V6',
-                'transmission' => '8-Speed Automatic',
-                'drivetrain' => 'AWD',
-                'exterior' => 'Matador Red',
-                'interior' => 'Parchment',
-                'fuel' => 'Gasoline',
-                'status' => 'sold',
-                'description' => 'A refined luxury crossover with a quiet cabin, smooth V6 power, and the polished design language Lexus buyers keep coming back for.',
-                'features' => [
-                    'Premium package',
-                    'Panoramic view monitor',
-                    'Mark Levinson audio',
-                    'Heated steering wheel',
-                    'Memory seating',
-                    'Power rear door',
-                ],
-            ],
-        ];
+        return Inventory::query()
+            ->where('status', $status)
+            ->when($request->filled('year'), fn ($query) => $query->where('year', (int) $request->query('year')))
+            ->when($request->filled('make'), fn ($query) => $query->where('make', $request->query('make')))
+            ->when($request->filled('model'), fn ($query) => $query->where('model', $request->query('model')))
+            ->when($request->filled('trim'), fn ($query) => $query->where('trim', $request->query('trim')))
+            ->when($request->filled('max_mileage'), fn ($query) => $query->where('mileage', '<=', (int) $request->query('max_mileage')))
+            ->when($request->filled('keyword'), function ($query) use ($request) {
+                $keyword = trim((string) $request->query('keyword'));
+
+                $query->where(function ($subQuery) use ($keyword) {
+                    $subQuery
+                        ->where('make', 'like', "%{$keyword}%")
+                        ->orWhere('model', 'like', "%{$keyword}%")
+                        ->orWhere('trim', 'like', "%{$keyword}%")
+                        ->orWhere('stock', 'like', "%{$keyword}%")
+                        ->orWhere('description', 'like', "%{$keyword}%");
+                });
+            })
+            ->when($request->filled('price_range'), function ($query) use ($request) {
+                $value = (string) $request->query('price_range');
+
+                if (str_ends_with($value, '+')) {
+                    $query->where('price', '>=', (float) rtrim($value, '+'));
+                    return;
+                }
+
+                [$min, $max] = array_pad(explode('-', $value, 2), 2, null);
+
+                if ($min !== null && $max !== null) {
+                    $query->whereBetween('price', [(float) $min, (float) $max]);
+                }
+            })
+            ->latest();
     }
 
-    private function findInventoryVehicle(string $stock, bool $sold): array
+    private function presentInventory(Inventory $inventory): array
     {
-        $inventory = $sold ? $this->soldInventoryData() : $this->featuredInventory();
+        $gallery = collect($inventory->gallery ?? [])
+            ->map(fn ($image) => $this->inventoryImageUrl($image))
+            ->filter()
+            ->values();
 
-        foreach ($inventory as $vehicle) {
-            if ($vehicle['stock'] === $stock) {
-                return $vehicle;
-            }
+        if ($inventory->main_image) {
+            $gallery->prepend($this->inventoryImageUrl($inventory->main_image));
         }
 
-        abort(404);
+        $gallery = $gallery->unique()->values()->all();
+
+        return [
+            'year' => (string) $inventory->year,
+            'make' => $inventory->make,
+            'model' => $inventory->model,
+            'trim' => $inventory->trim ?: 'Standard',
+            'price' => $inventory->status === 'sold' ? 'Sold' : $this->formatMoney($inventory->price),
+            'doc_fee' => $this->formatMoney($inventory->doc_fee),
+            'filing_fee' => $this->formatMoney($inventory->filing_fee),
+            'tag_fee' => $this->formatMoney($inventory->tag_fee),
+            'total_price' => $this->formatMoney($inventory->total_price),
+            'mileage' => number_format((int) $inventory->mileage),
+            'stock' => $inventory->stock,
+            'image' => $inventory->main_image ? $this->inventoryImageUrl($inventory->main_image) : 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80',
+            'gallery' => !empty($gallery) ? $gallery : ['https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80'],
+            'vin' => $inventory->vin ?: 'N/A',
+            'engine' => $inventory->engine ?: 'N/A',
+            'transmission' => $inventory->transmission ?: 'N/A',
+            'drivetrain' => $inventory->drivetrain ?: 'N/A',
+            'exterior' => $inventory->exterior ?: 'N/A',
+            'interior' => $inventory->interior ?: 'N/A',
+            'fuel' => $inventory->fuel ?: 'N/A',
+            'status' => $inventory->status,
+            'description' => $inventory->description ?: 'No description has been added for this vehicle yet.',
+            'features' => !empty($inventory->features) ? $inventory->features : ['Feature list coming soon'],
+        ];
     }
 
-    private function inventoryFilters(): array
+    private function inventoryImageUrl(?string $path): ?string
     {
-        return [
-            'years' => ['Year', '2024', '2023', '2022', '2021', '2020'],
-            'makes' => ['Make', 'Toyota', 'BMW', 'Mercedes-Benz', 'Ford', 'Volvo', 'Lexus'],
-            'models' => ['Model', 'Sequoia', 'GLE 350', 'X5 xDrive40i', 'S80', 'Expedition'],
-            'mileages' => ['Mileage', 'Under 10,000', 'Under 25,000', 'Under 50,000', 'Under 75,000'],
-            'trims' => ['Trim', 'Premium', 'Luxury', 'Sport', 'Platinum', 'Limited'],
-            'prices' => ['Any Price', '$25k - $50k', '$50k - $75k', '$75k - $100k', '$100k+'],
-        ];
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return null;
+        }
+
+        if (preg_match('/^https?:\/\//i', $path)) {
+            return $path;
+        }
+
+        if (str_starts_with($path, 'storage/')) {
+            return asset($path);
+        }
+
+        return Storage::disk('public')->url($path);
+    }
+
+    private function formatMoney($amount): string
+    {
+        return '$' . number_format((float) $amount, 0);
     }
 
     private function reasons(): array
