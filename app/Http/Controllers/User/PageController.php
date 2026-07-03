@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AppointmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
+use App\Models\ShippingRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -304,11 +305,43 @@ class PageController extends Controller
             'notes' => ['nullable', 'string', 'max:1500'],
         ]);
 
-        logger()->info('Nitro Motors USA shipping request received.', $validated);
+        ShippingRequest::create($validated);
 
-        return redirect()
-            ->route('services.shipping')
-            ->with('status', 'Your shipping request has been received. Our team will send you a transport quote shortly.');
+        try {
+            $contactRecipient = config('mail.contact_recipient', [
+                'address' => 'nitroo@gmail.com',
+                'name' => 'Nitro Motors USA',
+            ]);
+
+            Mail::send('emails.shipping-request', [
+                'shipping' => $validated,
+            ], function ($message) use ($validated, $contactRecipient) {
+                $message
+                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->replyTo($validated['email'], $validated['name'])
+                    ->subject('New Nitro Motors USA shipping request: ' . $validated['transport_type']);
+            });
+
+            logger()->info('Nitro Motors USA shipping request sent.', $validated);
+
+            return redirect()
+                ->route('services.shipping')
+                ->with('status', 'Your shipping request has been sent successfully.')
+                ->with('status_type', 'success')
+                ->with('status_title', 'Shipping Request Sent');
+        } catch (Throwable $exception) {
+            logger()->error('Nitro Motors USA shipping request failed to send.', [
+                'error' => $exception->getMessage(),
+                'payload' => $validated,
+            ]);
+
+            return redirect()
+                ->route('services.shipping')
+                ->withInput()
+                ->with('status', 'We could not send your shipping request right now. Please try again after mail setup is confirmed.')
+                ->with('status_type', 'error')
+                ->with('status_title', 'Request Failed');
+        }
     }
 
     public function consignment(): View

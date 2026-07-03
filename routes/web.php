@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AppointmentRequestController;
 use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\ShippingRequestController;
 use App\Http\Controllers\Admin\SizeController;
 
 /*
@@ -58,6 +59,12 @@ Route::prefix('admin/appointment-requests')->controller(AppointmentRequestContro
     Route::get('/index', 'index')->name('admin.appointment-requests.index');
     Route::get('/show/{appointmentRequest}', 'show')->name('admin.appointment-requests.show');
     Route::delete('/delete/{appointmentRequest}', 'destroy')->name('admin.appointment-requests.destroy');
+});
+
+Route::prefix('admin/shipping-requests')->controller(ShippingRequestController::class)->group(function () {
+    Route::get('/index', 'index')->name('admin.shipping-requests.index');
+    Route::get('/show/{shippingRequest}', 'show')->name('admin.shipping-requests.show');
+    Route::delete('/delete/{shippingRequest}', 'destroy')->name('admin.shipping-requests.destroy');
 });
 
 

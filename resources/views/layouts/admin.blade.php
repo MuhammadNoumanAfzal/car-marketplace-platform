@@ -165,6 +165,21 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'shipping-requests') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'shipping-requests' ? 'true' : 'false' }}"
+                                    data-target="#submenu-shipping-requests"
+                                    aria-controls="submenu-shipping-requests">
+                                    <i class="fa fa-fw fa-truck"></i> Shipping Requests
+                                </a>
+                                <div id="submenu-shipping-requests" class="collapse submenu @if ($active == 'shipping-requests') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.shipping-requests.index') }}">View All</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>
