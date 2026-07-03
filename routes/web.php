@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User\PageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\SizeController;
@@ -44,6 +45,12 @@ Route::prefix('admin/inventory')->controller(InventoryController::class)->group(
     Route::get('/edit/{inventory}', 'edit')->name('admin.inventory.edit');
     Route::put('/update/{inventory}', 'update')->name('admin.inventory.update');
     Route::delete('/delete/{inventory}', 'destroy')->name('admin.inventory.destroy');
+});
+
+Route::prefix('admin/contact-inquiries')->controller(ContactInquiryController::class)->group(function () {
+    Route::get('/index', 'index')->name('admin.contact-inquiries.index');
+    Route::get('/show/{contactInquiry}', 'show')->name('admin.contact-inquiries.show');
+    Route::delete('/delete/{contactInquiry}', 'destroy')->name('admin.contact-inquiries.destroy');
 });
 
 

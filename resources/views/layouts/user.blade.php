@@ -42,6 +42,31 @@
         </svg>
     </a>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if (session('status'))
+                Swal.fire({
+                    icon: @json(session('status_type', 'success')),
+                    title: @json(session('status_title', 'Done')),
+                    text: @json(session('status')),
+                    confirmButtonColor: '#2563eb',
+                    background: '#ffffff',
+                    color: '#0f172a'
+                });
+            @elseif ($errors->any())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Please check the form',
+                    text: @json($errors->first()),
+                    confirmButtonColor: '#d62034',
+                    background: '#ffffff',
+                    color: '#0f172a'
+                });
+            @endif
+        });
+    </script>
+
     @yield('scripts')
 </body>
 

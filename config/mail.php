@@ -102,6 +102,11 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'contact_recipient' => [
+        'address' => env('CONTACT_RECIPIENT_EMAIL', 'nitroo@gmail.com'),
+        'name' => env('CONTACT_RECIPIENT_NAME', 'Nitro Motors USA'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings

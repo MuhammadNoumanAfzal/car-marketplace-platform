@@ -34,7 +34,7 @@
                             <div class="hero-slider__media relative w-full max-w-3xl">
                                 <div class="absolute inset-x-8 bottom-8 top-10 rounded-full bg-ember/12 blur-3xl"></div>
                                 <div class="hero-slider__frame relative ml-auto w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/10 bg-neutral-950/20 shadow-[0_28px_60px_rgba(0,0,0,0.45)]">
-                                    <img src="{{ $slide['car_image'] }}" alt="{{ $slide['name'] }}" class="hero-slider__car h-full w-full object-cover">
+                                    <img src="{{ $slide['car_image'] }}" alt="{{ $slide['name'] }}" class="hero-slider__car h-full w-full object-contain">
                                 </div>
                             </div>
                         </div>

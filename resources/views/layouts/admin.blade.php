@@ -135,6 +135,21 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'contact-inquiries') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'contact-inquiries' ? 'true' : 'false' }}"
+                                    data-target="#submenu-contact-inquiries"
+                                    aria-controls="submenu-contact-inquiries">
+                                    <i class="fa fa-fw fa-envelope"></i> Contact Inquiries
+                                </a>
+                                <div id="submenu-contact-inquiries" class="collapse submenu @if ($active == 'contact-inquiries') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.contact-inquiries.index') }}">View All</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -194,6 +209,30 @@
     <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if (session('status'))
+                Swal.fire({
+                    icon: @json(session('status_type', 'success')),
+                    title: @json(session('status_title', 'Done')),
+                    text: @json(session('status')),
+                    confirmButtonColor: '#2563eb',
+                    background: '#ffffff',
+                    color: '#0f172a'
+                });
+            @elseif ($errors->any())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Something needs attention',
+                    text: @json($errors->first()),
+                    confirmButtonColor: '#d62034',
+                    background: '#ffffff',
+                    color: '#0f172a'
+                });
+            @endif
+        });
+    </script>
 
     @yield('script')
 </body>

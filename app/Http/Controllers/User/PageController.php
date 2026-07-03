@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactInquiry;
 use App\Models\Inventory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -157,11 +160,43 @@ class PageController extends Controller
             'message' => ['required', 'string', 'max:1500'],
         ]);
 
-        logger()->info('Nitro Motors USA contact inquiry received.', $validated);
+        ContactInquiry::create($validated);
 
-        return redirect()
-            ->route('contact')
-            ->with('status', 'Thanks for reaching out. Our team will get back to you shortly.');
+        try {
+            $contactRecipient = config('mail.contact_recipient', [
+                'address' => 'nitroo@gmail.com',
+                'name' => 'Nitro Motors USA',
+            ]);
+
+            Mail::send('emails.contact-inquiry', [
+                'inquiry' => $validated,
+            ], function ($message) use ($validated, $contactRecipient) {
+                $message
+                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->replyTo($validated['email'], $validated['name'])
+                    ->subject('New Nitro Motors USA contact inquiry: ' . $validated['topic']);
+            });
+
+            logger()->info('Nitro Motors USA contact inquiry sent.', $validated);
+
+            return redirect()
+                ->route('contact')
+                ->with('status', 'Your message has been sent successfully.')
+                ->with('status_type', 'success')
+                ->with('status_title', 'Message Sent');
+        } catch (Throwable $exception) {
+            logger()->error('Nitro Motors USA contact inquiry failed to send.', [
+                'error' => $exception->getMessage(),
+                'payload' => $validated,
+            ]);
+
+            return redirect()
+                ->route('contact')
+                ->withInput()
+                ->with('status', 'We could not send your message right now. Please try again after mail setup is confirmed.')
+                ->with('status_type', 'error')
+                ->with('status_title', 'Send Failed');
+        }
     }
 
     public function appointment(): View
