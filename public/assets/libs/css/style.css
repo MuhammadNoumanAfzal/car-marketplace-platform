@@ -6976,3 +6976,193 @@ Media Query
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width:320px) {}
+
+/* ==========================================================================
+   Nitro Motors Theme Override
+   ========================================================================== */
+
+:root {
+    --theme-bg: #0f0f10;
+    --theme-bg-soft: #17181a;
+    --theme-panel: #1d1f22;
+    --theme-panel-2: #25272b;
+    --theme-border: #34373d;
+    --theme-text: #e5e7eb;
+    --theme-muted: #a1a1aa;
+    --theme-accent: #e11d2e;
+    --theme-accent-strong: #be123c;
+    --theme-accent-soft: rgba(225, 29, 46, 0.12);
+    --theme-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+body {
+    color: var(--theme-muted);
+    background: linear-gradient(180deg, #0b0b0c 0%, #121315 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.page-header,
+.card-title,
+.navbar-brand,
+.nav-user-info .nav-user-name,
+.table,
+.form-control,
+.dropdown-item,
+.list-group-item,
+.nav-left-sidebar .navbar-nav .nav-link,
+.nav-left-sidebar .submenu .nav .nav-item .nav-link {
+    color: var(--theme-text);
+}
+
+.dashboard-header .navbar,
+.nav-left-sidebar,
+.card,
+.dropdown-menu,
+.notification-dropdown,
+.connection-dropdown,
+.nav-user-dropdown,
+.top-search-bar .form-control,
+.form-control,
+.input-group-text,
+.table,
+.modal-content,
+.list-group-item,
+.page-content,
+.main-content,
+.footer,
+.simple-card,
+.simple-outline-card,
+.accrodion-regular .card,
+.accrodion-outline .card,
+.product-sidebar,
+.product-thumbnail {
+    background-color: var(--theme-panel);
+    border-color: var(--theme-border);
+    box-shadow: var(--theme-shadow);
+}
+
+.card-header,
+.card-footer,
+.table thead th,
+.notification-title,
+.nav-user-info,
+.list-footer,
+.conntection-footer,
+.pageheader,
+.page-breadcrumb,
+.dropdown-menu-header,
+.modal-header,
+.modal-footer {
+    background-color: var(--theme-bg-soft);
+    border-color: var(--theme-border);
+    color: var(--theme-text);
+}
+
+.navbar-brand,
+.navbar-brand:hover,
+.text-primary,
+a,
+.nav-left-sidebar .nav-link i,
+.page-breadcrumb .breadcrumb-item a,
+.list-footer a,
+.conntection-footer a {
+    color: var(--theme-accent) !important;
+}
+
+.bg-primary,
+.badge-primary,
+.avatar.bg-primary,
+.btn-primary,
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle,
+.nav-user-info .status,
+.notification .indicator,
+.progress-bar,
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before,
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--theme-accent) !important;
+    border-color: var(--theme-accent) !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary.focus,
+.page-item.active .page-link,
+.nav-pills .nav-link.active,
+.simple-card .nav-tabs .nav-link.active,
+.simple-outline-card .nav-tabs .nav-link.active,
+.card-toolbar-tabs .nav-pills .nav-link.active,
+.nav-left-sidebar .navbar-nav .nav-link.active,
+.nav-left-sidebar .navbar-nav .nav-link:hover,
+.nav-left-sidebar .submenu .nav .nav-item .nav-link:hover {
+    background-color: var(--theme-accent-strong) !important;
+    border-color: var(--theme-accent-strong) !important;
+    color: #fff !important;
+}
+
+.bg-light,
+.table-striped tbody tr:nth-of-type(odd),
+.list-group-item.active,
+.notification-list .list-group-item.active,
+.page-link,
+.breadcrumb,
+.custom-file-label,
+.select2-container--default .select2-selection--single,
+.ms-container .ms-selectable,
+.ms-container .ms-selection {
+    background-color: var(--theme-panel-2) !important;
+    border-color: var(--theme-border) !important;
+    color: var(--theme-text) !important;
+}
+
+.border,
+.border-top,
+.border-bottom,
+.border-left,
+.border-right,
+.table td,
+.table th,
+.navbar-right-top .nav-item,
+.card-header,
+.card-footer,
+.dropdown-divider,
+.list-group-item,
+.page-link,
+.nav-tabs,
+.simple-card,
+.simple-outline-card,
+.accrodion-regular .card,
+.accrodion-outline .card,
+.product-content,
+.product-sidebar-widget {
+    border-color: var(--theme-border) !important;
+}
+
+.text-muted,
+.navbar-right-top .nav-item .nav-link,
+.nav-left-sidebar .nav-link i,
+.nav-left-sidebar .navbar-nav .nav-link,
+.nav-left-sidebar .submenu .nav .nav-item .nav-link,
+.form-control::placeholder,
+.dropdown-item,
+.notification-info .notification-date,
+.page-breadcrumb .breadcrumb-item,
+.card-subtitle,
+small {
+    color: var(--theme-muted) !important;
+}
+
+.form-control:focus,
+.custom-file-input:focus ~ .custom-file-label,
+.page-link:focus,
+.btn-primary:focus {
+    border-color: var(--theme-accent) !important;
+    box-shadow: 0 0 0 0.2rem var(--theme-accent-soft) !important;
+}

@@ -8,22 +8,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        asphalt: "#050816",
-        graphite: "#0D1630",
-        ember: "#D8A24C",
-        chrome: "#E9EEF8",
-        mist: "#91A0BE",
+        asphalt: "#090909",
+        graphite: "#161616",
+        ember: "#e11d2e",
+        chrome: "#f5f5f5",
+        mist: "#a3a3a3",
       },
       fontFamily: {
         display: ["Sora", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
       boxShadow: {
-        glow: "0 20px 60px rgba(216, 162, 76, 0.22)",
+        glow: "0 20px 60px rgba(225, 29, 46, 0.28)",
       },
       backgroundImage: {
         "hero-grid":
-          "radial-gradient(circle at top, rgba(216,162,76,0.18), transparent 30%), linear-gradient(135deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
+          "radial-gradient(circle at top, rgba(225,29,46,0.16), transparent 30%), linear-gradient(135deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
       },
     },
   },

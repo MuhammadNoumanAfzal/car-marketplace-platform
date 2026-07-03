@@ -8,7 +8,7 @@
         'eyebrow' => 'About Us',
         'title' => 'A premium dealership experience shaped for modern buyers.',
         'copy' => 'Nitro Motors USA combines elevated vehicle presentation, responsive support, and a cleaner buying process for customers who expect more than a basic listing page.',
-        'media' => "linear-gradient(135deg, rgba(5,8,22,0.22), rgba(5,8,22,0.62)), url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1400&q=80')",
+        'media' => "linear-gradient(135deg, rgba(10,10,10,0.24), rgba(10,10,10,0.68)), url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1400&q=80')",
     ])
 
     <section class="relative z-10 bg-asphalt pb-16">
@@ -62,7 +62,7 @@
                     <article class="reason-card">
                         <div class="reason-card__number">0{{ $loop->iteration }}</div>
                         <h3 class="mt-8 font-display text-2xl font-semibold text-white">{{ $reason['title'] }}</h3>
-                        <p class="mt-4 text-sm leading-7 text-slate-400">{{ $reason['copy'] }}</p>
+                        <p class="mt-4 text-sm leading-7 text-zinc-400">{{ $reason['copy'] }}</p>
                         <div class="reason-card__line"></div>
                     </article>
                 @endforeach

@@ -13,6 +13,7 @@ class PageController extends Controller
     {
         return view('user.home', [
             'slides' => $this->slides(),
+            'featuredInventory' => $this->featuredInventory(),
             'journeys' => $this->journeys(),
             'reasons' => $this->reasons(),
             'trustStats' => $this->trustStats(),
@@ -299,6 +300,51 @@ class PageController extends Controller
                     'Receive a market-aware quote after our quick review process.',
                     'Accept the offer and let us coordinate inspection, paperwork, and pickup.',
                 ],
+            ],
+        ];
+    }
+
+    private function featuredInventory(): array
+    {
+        return [
+            [
+                'year' => '2020',
+                'make' => 'Toyota',
+                'model' => 'Sequoia Platinum',
+                'price' => '$42,900',
+                'doc_fee' => '$367',
+                'filing_fee' => '$99',
+                'tag_fee' => '$27',
+                'total_price' => '$43,393',
+                'mileage' => '67,420',
+                'stock' => 'NMU20481',
+                'image' => 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80',
+            ],
+            [
+                'year' => '2021',
+                'make' => 'Mercedes-Benz',
+                'model' => 'GLE 350',
+                'price' => '$48,500',
+                'doc_fee' => '$367',
+                'filing_fee' => '$99',
+                'tag_fee' => '$27',
+                'total_price' => '$48,993',
+                'mileage' => '38,155',
+                'stock' => 'NMU21834',
+                'image' => 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80',
+            ],
+            [
+                'year' => '2022',
+                'make' => 'BMW',
+                'model' => 'X5 xDrive40i',
+                'price' => '$56,800',
+                'doc_fee' => '$367',
+                'filing_fee' => '$99',
+                'tag_fee' => '$27',
+                'total_price' => '$57,293',
+                'mileage' => '24,910',
+                'stock' => 'NMU22792',
+                'image' => 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
             ],
         ];
     }

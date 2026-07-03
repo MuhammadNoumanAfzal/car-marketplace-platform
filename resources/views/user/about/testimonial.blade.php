@@ -8,7 +8,7 @@
         'eyebrow' => 'Testimonials',
         'title' => 'Real buyer confidence is built through repeatable service.',
         'copy' => 'See how customers describe the Nitro Motors USA experience after buying, selling, financing, and coordinating delivery.',
-        'media' => "linear-gradient(135deg, rgba(5,8,22,0.22), rgba(5,8,22,0.62)), url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=1400&q=80')",
+        'media' => "linear-gradient(135deg, rgba(10,10,10,0.24), rgba(10,10,10,0.68)), url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=1400&q=80')",
     ])
 
     <section class="relative z-10 bg-asphalt pb-16">
@@ -48,13 +48,13 @@
                                 <div class="flex items-center gap-1 text-amber-300">
                                     <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
                                 </div>
-                                <p class="mt-6 text-sm leading-8 text-slate-300">"{{ $review['quote'] }}"</p>
+                                <p class="mt-6 text-sm leading-8 text-zinc-300">"{{ $review['quote'] }}"</p>
                                 <div class="mt-6 border-t border-white/10 pt-5">
                                     <div class="flex items-center gap-4">
                                         <div class="featured-quote__avatar">{{ strtoupper(substr($review['name'], 0, 1)) }}</div>
                                         <div>
                                             <h3 class="font-display text-xl font-semibold text-white">{{ $review['name'] }}</h3>
-                                            <p class="mt-1 text-sm text-slate-400">{{ $review['location'] }}</p>
+                                            <p class="mt-1 text-sm text-zinc-400">{{ $review['location'] }}</p>
                                         </div>
                                     </div>
                                 </div>

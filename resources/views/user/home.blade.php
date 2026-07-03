@@ -5,7 +5,7 @@
 
 @section('content')
     <section class="relative z-10 min-h-screen">
-        <div class="hero-slider relative min-h-screen overflow-hidden bg-slate-950" data-slider data-slider-interval="5500">
+        <div class="hero-slider relative min-h-screen overflow-hidden bg-neutral-950" data-slider data-slider-interval="5500">
             <div class="absolute inset-0">
                 @foreach ($slides as $index => $slide)
                     <div class="hero-slider__bg absolute inset-0 {{ $index === 0 ? 'is-active' : '' }}" data-slide-bg style="background-image: linear-gradient(90deg, rgba(5, 8, 15, 0.92) 0%, rgba(5, 8, 15, 0.74) 42%, rgba(5, 8, 15, 0.24) 100%), url('{{ $slide['background'] }}');"></div>
@@ -33,7 +33,7 @@
                         <div class="hero-media-wrap flex h-full items-center justify-end px-4 pb-20 pt-24 sm:px-8 sm:pt-28 lg:px-12 lg:pb-24 lg:pt-6 xl:px-16">
                             <div class="hero-slider__media relative w-full max-w-3xl">
                                 <div class="absolute inset-x-8 bottom-8 top-10 rounded-full bg-ember/12 blur-3xl"></div>
-                                <div class="hero-slider__frame relative ml-auto w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/20 shadow-[0_28px_60px_rgba(0,0,0,0.45)]">
+                                <div class="hero-slider__frame relative ml-auto w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/10 bg-neutral-950/20 shadow-[0_28px_60px_rgba(0,0,0,0.45)]">
                                     <img src="{{ $slide['car_image'] }}" alt="{{ $slide['name'] }}" class="hero-slider__car h-full w-full object-cover">
                                 </div>
                             </div>
@@ -91,6 +91,56 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mt-8">
+                <div class="mb-6 flex items-end justify-between gap-4">
+                    <div>
+                        <p class="section-label text-sm sm:text-base">Fresh Inventory</p>
+                        <h2 class="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">Featured vehicles ready to shop now.</h2>
+                    </div>
+                    <a href="#contact" class="inventory-cta-link">Ask About Availability</a>
+                </div>
+
+                <div class="grid gap-5 xl:grid-cols-3">
+                    @foreach ($featuredInventory as $vehicle)
+                        <article class="inventory-card-showcase">
+                            <div class="inventory-card-showcase__media">
+                                <div class="inventory-card-showcase__topbar">
+                                    <button type="button" class="inventory-card-showcase__utility">&#9733; Save</button>
+                                    <button type="button" class="inventory-card-showcase__utility">&#9993; Text To Phone</button>
+                                </div>
+
+                                <div class="inventory-card-showcase__image-wrap">
+                                    <img src="{{ $vehicle['image'] }}" alt="{{ $vehicle['year'] }} {{ $vehicle['make'] }} {{ $vehicle['model'] }}" class="inventory-card-showcase__image">
+                                </div>
+                            </div>
+
+                            <div class="inventory-card-showcase__body">
+                                <div class="inventory-card-showcase__heading">
+                                    <h3 class="inventory-card-showcase__title">{{ $vehicle['year'] }} {{ $vehicle['make'] }} {{ $vehicle['model'] }}</h3>
+                                    <p class="inventory-card-showcase__price">Price: {{ $vehicle['price'] }}</p>
+                                </div>
+
+                                <dl class="inventory-card-showcase__fees">
+                                    <div class="inventory-card-showcase__fee-row"><dt>Documentation Fee:</dt><dd>{{ $vehicle['doc_fee'] }}</dd></div>
+                                    <div class="inventory-card-showcase__fee-row"><dt>Electronic Filing Fee:</dt><dd>{{ $vehicle['filing_fee'] }}</dd></div>
+                                    <div class="inventory-card-showcase__fee-row"><dt>Temporary Tag:</dt><dd>{{ $vehicle['tag_fee'] }}</dd></div>
+                                </dl>
+
+                                <div class="inventory-card-showcase__total">
+                                    <span>Total Price:</span>
+                                    <strong>{{ $vehicle['total_price'] }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="inventory-card-showcase__meta">
+                                <span>&#9716; {{ $vehicle['mileage'] }} mi</span>
+                                <span>&#35; {{ $vehicle['stock'] }}</span>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </section>
 
@@ -107,18 +157,18 @@
                     <div class="journey-card journey-card--compact rounded-[32px] p-6 sm:p-7">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">{{ $journey['kicker'] }}</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-zinc-500">{{ $journey['kicker'] }}</p>
                                 <h3 class="mt-3 font-display text-[2rem] font-semibold text-white">{{ $journey['title'] }}</h3>
                             </div>
                             <div class="journey-badge">0{{ $loop->iteration }}</div>
                         </div>
-                        <p class="mt-3 max-w-xl text-sm leading-7 text-slate-400">{{ $journey['intro'] }}</p>
+                        <p class="mt-3 max-w-xl text-sm leading-7 text-zinc-400">{{ $journey['intro'] }}</p>
 
                         <div class="mt-6 space-y-3">
                             @foreach ($journey['steps'] as $step)
                                 <div class="journey-step">
                                     <div class="journey-step__count">{{ $loop->iteration }}</div>
-                                    <p class="text-sm leading-7 text-slate-300">{{ $step }}</p>
+                                    <p class="text-sm leading-7 text-zinc-300">{{ $step }}</p>
                                 </div>
                             @endforeach
                         </div>
@@ -141,7 +191,7 @@
                     <div class="reason-card">
                         <div class="reason-card__number">0{{ $loop->iteration }}</div>
                         <h3 class="mt-10 font-display text-2xl font-semibold text-white">{{ $reason['title'] }}</h3>
-                        <p class="mt-4 text-sm leading-7 text-slate-400">{{ $reason['copy'] }}</p>
+                        <p class="mt-4 text-sm leading-7 text-zinc-400">{{ $reason['copy'] }}</p>
                         <div class="reason-card__line"></div>
                     </div>
                 @endforeach
@@ -191,10 +241,10 @@
                                 <div class="flex items-center gap-1 text-amber-300">
                                     <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
                                 </div>
-                                <p class="mt-5 text-sm leading-7 text-slate-300">"{{ $review['quote'] }}"</p>
+                                <p class="mt-5 text-sm leading-7 text-zinc-300">"{{ $review['quote'] }}"</p>
                                 <div class="mt-5 border-t border-white/10 pt-4">
                                     <h3 class="font-display text-lg font-semibold text-white">{{ $review['name'] }}</h3>
-                                    <p class="mt-1 text-sm text-slate-400">{{ $review['location'] }}</p>
+                                    <p class="mt-1 text-sm text-zinc-400">{{ $review['location'] }}</p>
                                 </div>
                             </article>
                         @endforeach
@@ -227,7 +277,7 @@
 
             <div class="location-showcase location-showcase--compact">
                 <div class="location-showcase__media">
-                    <div class="location-showcase__image" style="background-image: linear-gradient(90deg, rgba(5,8,22,0.26), rgba(5,8,22,0.08)), url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1600&q=80');"></div>
+                    <div class="location-showcase__image" style="background-image: linear-gradient(90deg, rgba(10,10,10,0.34), rgba(10,10,10,0.1)), url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1600&q=80');"></div>
                     <div class="location-showcase__button-wrap">
                         <a href="{{ route('directions') }}" class="location-showcase__button">Get Directions</a>
                     </div>
@@ -277,11 +327,11 @@
                         <div class="grid gap-2 sm:grid-cols-2">
                             <div>
                                 <p class="text-sm font-semibold text-white">Monday - Friday</p>
-                                <p class="mt-1 text-sm text-slate-400">10:00 AM - 7:00 PM</p>
+                                <p class="mt-1 text-sm text-zinc-400">10:00 AM - 7:00 PM</p>
                             </div>
                             <div>
                                 <p class="text-sm font-semibold text-white">Saturday - Sunday</p>
-                                <p class="mt-1 text-sm text-slate-400">By Appointment</p>
+                                <p class="mt-1 text-sm text-zinc-400">By Appointment</p>
                             </div>
                         </div>
                     </div>

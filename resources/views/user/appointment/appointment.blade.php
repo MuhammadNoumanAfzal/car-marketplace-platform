@@ -8,7 +8,7 @@
         'eyebrow' => 'Appointment',
         'title' => 'Book time with the Nitro Motors USA team.',
         'copy' => 'Schedule a showroom visit, virtual walkaround, trade-in review, or financing consultation through a cleaner, faster appointment flow.',
-        'media' => "linear-gradient(135deg, rgba(5,8,22,0.18), rgba(5,8,22,0.58)), url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1400&q=80')",
+        'media' => "linear-gradient(135deg, rgba(10,10,10,0.22), rgba(10,10,10,0.64)), url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1400&q=80')",
     ])
 
     <section class="relative z-10 bg-asphalt pb-16">

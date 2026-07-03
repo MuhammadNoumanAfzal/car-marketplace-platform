@@ -13,12 +13,12 @@
     @yield('styles')
 </head>
 
-<body class="selection:bg-ember selection:text-asphalt">
+<body class="selection:bg-ember selection:text-white">
     <div class="relative overflow-hidden">
         <div class="pointer-events-none absolute inset-0 bg-hero-grid bg-[size:22px_22px] opacity-30"></div>
         <div class="pointer-events-none absolute left-1/2 top-0 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-ember/10 blur-3xl"></div>
-        <div class="pointer-events-none absolute right-0 top-[20rem] h-[28rem] w-[28rem] rounded-full bg-sky-500/10 blur-3xl"></div>
-        <div class="pointer-events-none absolute left-0 top-[60rem] h-[24rem] w-[24rem] rounded-full bg-cyan-400/10 blur-3xl"></div>
+        <div class="pointer-events-none absolute right-0 top-[20rem] h-[28rem] w-[28rem] rounded-full bg-red-600/10 blur-3xl"></div>
+        <div class="pointer-events-none absolute left-0 top-[60rem] h-[24rem] w-[24rem] rounded-full bg-zinc-500/10 blur-3xl"></div>
 
         @include('user.partials.header')
 

@@ -8,7 +8,7 @@
         'eyebrow' => 'Directions',
         'title' => 'Find the showroom fast and arrive with the details you need.',
         'copy' => 'View location details, nearby landmarks, working hours, and the easiest route to connect with the Nitro Motors USA team.',
-        'media' => "linear-gradient(135deg, rgba(5,8,22,0.18), rgba(5,8,22,0.58)), url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1400&q=80')",
+        'media' => "linear-gradient(135deg, rgba(10,10,10,0.22), rgba(10,10,10,0.64)), url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1400&q=80')",
     ])
 
     <section class="relative z-10 bg-asphalt pb-16">

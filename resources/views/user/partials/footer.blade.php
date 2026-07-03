@@ -35,7 +35,7 @@
                         <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ember text-lg font-bold text-white shadow-glow">N</span>
                         <div>
                             <p class="font-display text-lg font-semibold text-white">Nitro Motors USA</p>
-                            <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Premium Auto Gallery</p>
+                            <p class="text-xs uppercase tracking-[0.3em] text-zinc-400">Premium Auto Gallery</p>
                         </div>
                     </div>
 

@@ -4,11 +4,11 @@
             <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-ember text-lg font-bold text-white shadow-glow">N</span>
             <div>
                 <p class="font-display text-lg font-semibold tracking-wide text-white">Nitro Motors USA</p>
-                <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Premium Auto Gallery</p>
+                <p class="text-xs uppercase tracking-[0.28em] text-zinc-400">Premium Auto Gallery</p>
             </div>
         </a>
 
-        <nav class="hidden items-center gap-8 text-sm font-medium text-slate-200 lg:flex">
+        <nav class="hidden items-center gap-8 text-sm font-medium text-zinc-200 lg:flex">
             <a href="{{ route('home') }}" class="header-link {{ request()->routeIs('home') ? 'is-active' : '' }}">Home</a>
             <a href="{{ route('home') }}#inventory" class="header-link">Inventory</a>
 
@@ -39,7 +39,7 @@
 
         <div class="flex items-center gap-3">
             <a href="{{ route('home') }}#inventory" class="hidden rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5 sm:inline-flex">Explore Cars</a>
-            <a href="{{ route('appointment') }}#quick-contact" class="inline-flex rounded-full bg-ember px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-red-500">Book a Call</a>
+            <a href="{{ route('appointment') }}#quick-contact" class="inline-flex rounded-full bg-ember px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-red-700">Book a Call</a>
         </div>
     </div>
 </header>
