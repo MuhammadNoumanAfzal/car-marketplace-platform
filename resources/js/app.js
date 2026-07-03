@@ -179,3 +179,28 @@ carousels.forEach((carousel) => {
     updateCarousel(0);
     restartAutoPlay();
 });
+
+const revealItems = document.querySelectorAll('[data-reveal]');
+
+if (revealItems.length) {
+    const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                const delay = entry.target.dataset.revealDelay || '0';
+                entry.target.style.setProperty('--reveal-delay', `${delay}ms`);
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            });
+        },
+        {
+            rootMargin: '0px 0px -12% 0px',
+            threshold: 0.12,
+        }
+    );
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+}

@@ -51,9 +51,9 @@
         </div>
     </section>
 
-    <section id="inventory" class="relative z-10 bg-asphalt pb-16 pt-10">
+    <section id="inventory" class="relative z-10 bg-asphalt pb-16 pt-10" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="search-band rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8">
+            <div class="search-band reveal-card reveal-card--hero-band rounded-[32px] border border-white/10 px-5 py-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:px-6 lg:px-8" data-reveal>
                 <div class="grid gap-5 xl:grid-cols-[repeat(5,minmax(0,1fr))]">
                     <label class="block">
                         <span class="search-band__label">By Year</span>
@@ -93,29 +93,35 @@
             </div>
 
             <div class="mt-8">
-                <div class="mb-6 flex items-end justify-between gap-4">
+                <div class="mb-6 flex items-end justify-between gap-4 reveal-card" data-reveal>
                     <div>
                         <p class="section-label text-sm sm:text-base">Fresh Inventory</p>
                         <h2 class="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">Featured vehicles ready to shop now.</h2>
                     </div>
-                    <a href="#contact" class="inventory-cta-link">Ask About Availability</a>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a href="{{ route('inventory.all') }}" class="inventory-cta-link">Explore All Inventory</a>
+                        <a href="{{ route('contact') }}" class="inventory-cta-link inventory-cta-link--ghost">Ask About Availability</a>
+                    </div>
                 </div>
 
                 <div class="grid gap-5 xl:grid-cols-3">
                     @foreach ($featuredInventory as $vehicle)
-                        <article class="inventory-card-showcase">
+                        <article class="inventory-card-showcase reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 90 }}">
                             <div class="inventory-card-showcase__media">
                                 <div class="inventory-card-showcase__topbar">
                                     <button type="button" class="inventory-card-showcase__utility">&#9733; Save</button>
                                     <button type="button" class="inventory-card-showcase__utility">&#9993; Text To Phone</button>
                                 </div>
 
-                                <div class="inventory-card-showcase__image-wrap">
+                                <a href="{{ route('inventory.detail', $vehicle['stock']) }}" class="inventory-card-showcase__image-wrap">
                                     <img src="{{ $vehicle['image'] }}" alt="{{ $vehicle['year'] }} {{ $vehicle['make'] }} {{ $vehicle['model'] }}" class="inventory-card-showcase__image">
-                                </div>
+                                    <div class="inventory-card-showcase__overlay">
+                                        <span class="inventory-card-showcase__overlay-button">View Details</span>
+                                    </div>
+                                </a>
                             </div>
 
-                            <div class="inventory-card-showcase__body">
+                            <a href="{{ route('inventory.detail', $vehicle['stock']) }}" class="inventory-card-showcase__body">
                                 <div class="inventory-card-showcase__heading">
                                     <h3 class="inventory-card-showcase__title">{{ $vehicle['year'] }} {{ $vehicle['make'] }} {{ $vehicle['model'] }}</h3>
                                     <p class="inventory-card-showcase__price">Price: {{ $vehicle['price'] }}</p>
@@ -131,12 +137,12 @@
                                     <span>Total Price:</span>
                                     <strong>{{ $vehicle['total_price'] }}</strong>
                                 </div>
-                            </div>
+                            </a>
 
-                            <div class="inventory-card-showcase__meta">
+                            <a href="{{ route('inventory.detail', $vehicle['stock']) }}" class="inventory-card-showcase__meta">
                                 <span>&#9716; {{ $vehicle['mileage'] }} mi</span>
                                 <span>&#35; {{ $vehicle['stock'] }}</span>
-                            </div>
+                            </a>
                         </article>
                     @endforeach
                 </div>
@@ -144,9 +150,9 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="section-heading section-heading--compact">
+            <div class="section-heading section-heading--compact reveal-card" data-reveal>
                 <p class="section-label">Buy Or Sell</p>
                 <h2 class="section-title mt-4">Two clear paths for buyers and sellers, designed to feel smooth from the start.</h2>
                 <p class="section-copy mx-auto mt-4">Whether you are shopping for the right vehicle or turning your current one into a clean sale, every step should feel guided, premium, and easy to understand.</p>
@@ -154,7 +160,7 @@
 
             <div class="grid gap-5 lg:grid-cols-2">
                 @foreach ($journeys as $journey)
-                    <div class="journey-card journey-card--compact rounded-[32px] p-6 sm:p-7">
+                    <div class="journey-card journey-card--compact reveal-card rounded-[32px] p-6 sm:p-7" data-reveal data-reveal-delay="{{ $loop->index * 110 }}">
                         <div class="flex items-center justify-between gap-4">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-[0.35em] text-zinc-500">{{ $journey['kicker'] }}</p>
@@ -178,9 +184,9 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-20">
+    <section class="relative z-10 bg-asphalt pb-20" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="section-heading">
+            <div class="section-heading reveal-card" data-reveal>
                 <p class="section-label">Why Choose Us</p>
                 <h2 class="section-title mt-4">A more elegant dealership experience built around clarity, speed, and trust.</h2>
                 <p class="section-copy mx-auto mt-4">The design should not only look premium, it should communicate that this team is organized, responsive, and serious about helping customers make good decisions.</p>
@@ -188,7 +194,7 @@
 
             <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
                 @foreach ($reasons as $reason)
-                    <div class="reason-card">
+                    <div class="reason-card reveal-card" data-reveal data-reveal-delay="{{ $loop->index * 85 }}">
                         <div class="reason-card__number">0{{ $loop->iteration }}</div>
                         <h3 class="mt-10 font-display text-2xl font-semibold text-white">{{ $reason['title'] }}</h3>
                         <p class="mt-4 text-sm leading-7 text-zinc-400">{{ $reason['copy'] }}</p>
@@ -199,15 +205,15 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="section-heading section-heading--compact">
+            <div class="section-heading section-heading--compact reveal-card" data-reveal>
                 <p class="section-label">Trust Us</p>
                 <h2 class="section-title mt-4">Credibility should feel visible across every touchpoint.</h2>
                 <p class="section-copy mx-auto mt-4">These trust signals give the page more substance and reassure buyers and sellers that the dealership is active, experienced, and consistent.</p>
             </div>
 
-            <div class="trust-rail">
+            <div class="trust-rail reveal-card" data-reveal>
                 <div class="trust-rail__intro">
                     <span class="trust-rail__dash"></span>
                     <p class="trust-rail__title">Confidence markers</p>
@@ -225,15 +231,15 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="section-heading section-heading--compact">
+            <div class="section-heading section-heading--compact reveal-card" data-reveal>
                 <p class="section-label">Reviews</p>
                 <h2 class="section-title mt-4">What customers say after working with Nitro Motors USA.</h2>
                 <p class="section-copy mx-auto mt-4">Real confidence comes from repeatable service, clear communication, and a process that feels easy from start to finish.</p>
             </div>
 
-            <div class="testimonial-slider" data-carousel>
+            <div class="testimonial-slider reveal-card" data-carousel data-reveal>
                 <div class="testimonial-slider__viewport overflow-hidden">
                     <div class="testimonial-slider__track" data-carousel-track>
                         @foreach ($reviews as $review)
@@ -267,15 +273,15 @@
         </div>
     </section>
 
-    <section class="relative z-10 bg-asphalt pb-16">
+    <section class="relative z-10 bg-asphalt pb-16" data-reveal-section>
         <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-            <div class="section-heading section-heading--compact">
+            <div class="section-heading section-heading--compact reveal-card" data-reveal>
                 <p class="section-label">Location</p>
                     <h2 class="section-title mt-4">Visit our showroom, connect with the team, and get directions fast.</h2>
                 <p class="section-copy mx-auto mt-4">We wanted this section to feel more like a premium dealership info panel than a basic contact box, with space for the showroom image and the key details people actually need.</p>
             </div>
 
-            <div class="location-showcase location-showcase--compact">
+            <div class="location-showcase location-showcase--compact reveal-card" data-reveal>
                 <div class="location-showcase__media">
                     <div class="location-showcase__image" style="background-image: linear-gradient(90deg, rgba(10,10,10,0.34), rgba(10,10,10,0.1)), url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1600&q=80');"></div>
                     <div class="location-showcase__button-wrap">
