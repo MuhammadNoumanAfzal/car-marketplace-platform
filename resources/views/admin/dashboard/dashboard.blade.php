@@ -11,11 +11,11 @@
             overflow: hidden;
             display: grid;
             grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
-            gap: 18px;
-            padding: 28px;
+            gap: 14px;
+            padding: 20px 22px;
             background: linear-gradient(135deg, #08142f 0%, #0f2760 58%, #163b89 100%);
-            border-radius: 24px;
-            box-shadow: 0 24px 60px rgba(8, 20, 47, 0.24);
+            border-radius: 20px;
+            box-shadow: 0 18px 42px rgba(8, 20, 47, 0.2);
         }
 
         .admin-hero::before,
@@ -52,38 +52,38 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.08);
             color: rgba(255, 255, 255, 0.88);
-            font-size: 0.82rem;
+            font-size: 0.76rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .admin-hero h1 {
             margin: 0;
-            font-size: 2.35rem;
-            line-height: 1.04;
+            font-size: 1.9rem;
+            line-height: 1.08;
             font-weight: 800;
             color: #ffffff;
-            max-width: 12ch;
+            max-width: 11ch;
         }
 
         .admin-hero p {
-            margin: 14px 0 0;
-            max-width: 560px;
+            margin: 10px 0 0;
+            max-width: 480px;
             color: rgba(234, 241, 255, 0.78);
-            font-size: 1rem;
+            font-size: 0.92rem;
         }
 
         .admin-hero-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 22px;
+            gap: 10px;
+            margin-top: 16px;
         }
 
         .admin-hero-button,
@@ -91,10 +91,11 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-height: 48px;
-            padding: 0 18px;
+            min-height: 42px;
+            padding: 0 15px;
             border-radius: 999px;
             font-weight: 700;
+            font-size: 0.9rem;
             text-decoration: none !important;
         }
 
@@ -113,13 +114,13 @@
         .admin-hero-side {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
+            gap: 10px;
             align-content: start;
         }
 
         .admin-hero-mini {
-            padding: 18px;
-            border-radius: 18px;
+            padding: 14px;
+            border-radius: 16px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
@@ -127,24 +128,24 @@
 
         .admin-hero-mini-label {
             color: rgba(234, 241, 255, 0.72);
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 0.06em;
             font-weight: 700;
         }
 
         .admin-hero-mini-value {
-            margin-top: 10px;
+            margin-top: 8px;
             color: #ffffff;
-            font-size: 1.7rem;
+            font-size: 1.35rem;
             font-weight: 800;
             line-height: 1;
         }
 
         .admin-hero-mini-note {
-            margin-top: 8px;
+            margin-top: 6px;
             color: rgba(234, 241, 255, 0.72);
-            font-size: 0.92rem;
+            font-size: 0.84rem;
         }
 
         .admin-dashboard-grid {
@@ -407,23 +408,29 @@
         }
 
         .admin-pixel-card {
-            padding: 18px;
+            padding: 16px;
             border-radius: 16px;
             border: 1px solid #e4ecff;
             background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            min-height: 132px;
         }
 
         .admin-pixel-top {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 10px;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
 
         .admin-pixel-name {
             color: #172033;
             font-weight: 800;
+            font-size: 1rem;
+            line-height: 1.35;
+            flex: 1 1 120px;
+            min-width: 0;
         }
 
         .admin-pixel-badge {
@@ -437,6 +444,8 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.06em;
+            white-space: nowrap;
+            flex: 0 0 auto;
         }
 
         .admin-pixel-badge.live {
@@ -451,8 +460,10 @@
 
         .admin-pixel-id {
             color: #60708d;
-            font-size: 0.92rem;
-            word-break: break-all;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .admin-mini-status-grid {
@@ -549,11 +560,11 @@
 
         @media (max-width: 767.98px) {
             .admin-hero {
-                padding: 22px;
+                padding: 18px;
             }
 
             .admin-hero h1 {
-                font-size: 1.95rem;
+                font-size: 1.65rem;
             }
 
             .admin-hero-side {
@@ -575,7 +586,26 @@
 
         @media (max-width: 991.98px) {
             .admin-pixel-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .admin-pixel-grid,
+            .admin-mini-status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-pixel-card {
+                min-height: unset;
+            }
+
+            .admin-pixel-name {
+                font-size: 0.95rem;
+            }
+
+            .admin-pixel-id {
+                font-size: 0.88rem;
             }
         }
 
