@@ -174,6 +174,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link @if ($active == 'marketing-settings') active @endif" href="{{ route('admin.marketing-settings.edit') }}">
+                                    <i class="fa fa-fw fa-bullhorn"></i> Marketing Pixels
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link @if ($active == 'inventory') active @endif"
                                     href="#"
                                     data-toggle="collapse"

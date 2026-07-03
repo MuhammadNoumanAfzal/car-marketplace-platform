@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ConsignmentRequestController;
 use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\MarketingSettingController;
 use App\Http\Controllers\Admin\ShippingRequestController;
 use App\Http\Controllers\Admin\SizeController;
 
@@ -51,6 +52,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
         Route::get('/account', [AuthController::class, 'editAccount'])->name('admin.account.edit');
         Route::put('/account', [AuthController::class, 'updateAccount'])->name('admin.account.update');
+        Route::get('/marketing-settings', [MarketingSettingController::class, 'edit'])->name('admin.marketing-settings.edit');
+        Route::put('/marketing-settings', [MarketingSettingController::class, 'update'])->name('admin.marketing-settings.update');
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 

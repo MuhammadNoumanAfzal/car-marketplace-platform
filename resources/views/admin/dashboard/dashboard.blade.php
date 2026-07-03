@@ -400,6 +400,61 @@
             gap: 14px;
         }
 
+        .admin-pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .admin-pixel-card {
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid #e4ecff;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+        }
+
+        .admin-pixel-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .admin-pixel-name {
+            color: #172033;
+            font-weight: 800;
+        }
+
+        .admin-pixel-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .admin-pixel-badge.live {
+            background: rgba(37, 99, 235, 0.12);
+            color: #1d4ed8;
+        }
+
+        .admin-pixel-badge.off {
+            background: rgba(214, 32, 52, 0.1);
+            color: #d62034;
+        }
+
+        .admin-pixel-id {
+            color: #60708d;
+            font-size: 0.92rem;
+            word-break: break-all;
+        }
+
         .admin-make-row {
             display: grid;
             gap: 8px;
@@ -509,6 +564,18 @@
 
             .admin-activity-time {
                 grid-column: 2;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .admin-pixel-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .admin-pixel-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -719,6 +786,30 @@
                             @endforeach
                         </div>
                     @endif
+                </section>
+
+                <section class="admin-panel">
+                    <div class="admin-panel-head">
+                        <div>
+                            <h2>Marketing Pixels</h2>
+                            <div class="admin-panel-note">Quick status for your ad tracking integrations.</div>
+                        </div>
+                        <a href="{{ route('admin.marketing-settings.edit') }}" class="admin-view-link">Manage</a>
+                    </div>
+
+                    <div class="admin-pixel-grid">
+                        @foreach ($pixelStatuses as $pixel)
+                            <div class="admin-pixel-card">
+                                <div class="admin-pixel-top">
+                                    <div class="admin-pixel-name">{{ $pixel['label'] }}</div>
+                                    <span class="admin-pixel-badge {{ $pixel['value'] ? 'live' : 'off' }}">{{ $pixel['value'] ? 'Live' : 'Off' }}</span>
+                                </div>
+                                <div class="admin-pixel-id">
+                                    {{ $pixel['value'] ?: 'Not connected yet' }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </section>
             </div>
         </div>

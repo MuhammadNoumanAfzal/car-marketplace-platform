@@ -7,6 +7,7 @@ use App\Models\AppointmentRequest;
 use App\Models\ConsignmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
+use App\Models\MarketingSetting;
 use App\Models\ShippingRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -60,6 +61,39 @@ class DashboardController extends Controller
             ->get();
 
         $recentActivity = $this->buildRecentActivity();
+        $marketingSetting = MarketingSetting::current();
+        $pixelStatuses = [
+            [
+                'label' => 'Meta / Instagram',
+                'value' => $marketingSetting->meta_pixel_id,
+                'accent' => 'blue',
+            ],
+            [
+                'label' => 'Google',
+                'value' => $marketingSetting->google_tag_id,
+                'accent' => 'red',
+            ],
+            [
+                'label' => 'TikTok',
+                'value' => $marketingSetting->tiktok_pixel_id,
+                'accent' => 'blue',
+            ],
+            [
+                'label' => 'Snapchat',
+                'value' => $marketingSetting->snapchat_pixel_id,
+                'accent' => 'red',
+            ],
+            [
+                'label' => 'Pinterest',
+                'value' => $marketingSetting->pinterest_tag_id,
+                'accent' => 'blue',
+            ],
+            [
+                'label' => 'LinkedIn',
+                'value' => $marketingSetting->linkedin_partner_id,
+                'accent' => 'red',
+            ],
+        ];
 
         $data = [
             'heading' => 'Dashboard',
@@ -120,6 +154,7 @@ class DashboardController extends Controller
             'monthlyLeadSeries' => $monthlyLeadSeries,
             'topMakes' => $topMakes,
             'recentActivity' => $recentActivity,
+            'pixelStatuses' => $pixelStatuses,
             'recentConsignmentRequests' => ConsignmentRequest::latest()->take(5)->get(),
         ];
 
