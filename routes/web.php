@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AppointmentRequestController;
+use App\Http\Controllers\Admin\ConsignmentRequestController;
 use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
@@ -65,6 +66,12 @@ Route::prefix('admin/shipping-requests')->controller(ShippingRequestController::
     Route::get('/index', 'index')->name('admin.shipping-requests.index');
     Route::get('/show/{shippingRequest}', 'show')->name('admin.shipping-requests.show');
     Route::delete('/delete/{shippingRequest}', 'destroy')->name('admin.shipping-requests.destroy');
+});
+
+Route::prefix('admin/consignment-requests')->controller(ConsignmentRequestController::class)->group(function () {
+    Route::get('/index', 'index')->name('admin.consignment-requests.index');
+    Route::get('/show/{consignmentRequest}', 'show')->name('admin.consignment-requests.show');
+    Route::delete('/delete/{consignmentRequest}', 'destroy')->name('admin.consignment-requests.destroy');
 });
 
 

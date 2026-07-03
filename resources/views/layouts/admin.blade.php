@@ -180,6 +180,21 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'consignment-requests') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'consignment-requests' ? 'true' : 'false' }}"
+                                    data-target="#submenu-consignment-requests"
+                                    aria-controls="submenu-consignment-requests">
+                                    <i class="fa fa-fw fa-file-alt"></i> Consignment Requests
+                                </a>
+                                <div id="submenu-consignment-requests" class="collapse submenu @if ($active == 'consignment-requests') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.consignment-requests.index') }}">View All</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>

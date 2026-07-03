@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppointmentRequest;
+use App\Models\ConsignmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
 use App\Models\ShippingRequest;
@@ -389,11 +390,43 @@ class PageController extends Controller
             'phone' => ['required', 'string', 'max:30'],
         ]);
 
-        logger()->info('Nitro Motors USA consignment request received.', $validated);
+        ConsignmentRequest::create($validated);
 
-        return redirect()
-            ->route('services.consignment')
-            ->with('status', 'Your consignment request has been received. Our team will review the vehicle details and contact you shortly.');
+        try {
+            $contactRecipient = config('mail.contact_recipient', [
+                'address' => 'nitroo@gmail.com',
+                'name' => 'Nitro Motors USA',
+            ]);
+
+            Mail::send('emails.consignment-request', [
+                'requestData' => $validated,
+            ], function ($message) use ($validated, $contactRecipient) {
+                $message
+                    ->to($contactRecipient['address'] ?? 'nitroo@gmail.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->replyTo($validated['email'], $validated['first_name'] . ' ' . $validated['last_name'])
+                    ->subject('New Nitro Motors USA consignment request: ' . $validated['vehicle_year'] . ' ' . $validated['make'] . ' ' . $validated['model']);
+            });
+
+            logger()->info('Nitro Motors USA consignment request sent.', $validated);
+
+            return redirect()
+                ->route('services.consignment')
+                ->with('status', 'Your consignment request has been sent successfully.')
+                ->with('status_type', 'success')
+                ->with('status_title', 'Consignment Request Sent');
+        } catch (Throwable $exception) {
+            logger()->error('Nitro Motors USA consignment request failed to send.', [
+                'error' => $exception->getMessage(),
+                'payload' => $validated,
+            ]);
+
+            return redirect()
+                ->route('services.consignment')
+                ->withInput()
+                ->with('status', 'We could not send your consignment request right now. Please try again after mail setup is confirmed.')
+                ->with('status_type', 'error')
+                ->with('status_title', 'Request Failed');
+        }
     }
 
     private function slides(): array
