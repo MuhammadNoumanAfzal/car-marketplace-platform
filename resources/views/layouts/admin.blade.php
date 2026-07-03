@@ -179,6 +179,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link @if ($active == 'seo-settings') active @endif" href="{{ route('admin.seo-settings.edit') }}">
+                                    <i class="fa fa-fw fa-search"></i> SEO Settings
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link @if ($active == 'inventory') active @endif"
                                     href="#"
                                     data-toggle="collapse"

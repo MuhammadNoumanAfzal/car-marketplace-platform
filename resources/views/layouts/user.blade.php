@@ -4,9 +4,68 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Nitro Motors USA')</title>
-    <meta name="description" content="@yield('meta_description', 'Modern car marketplace for premium vehicles across the USA.')">
     @php($marketingSettings = \App\Models\MarketingSetting::query()->first())
+    @php($seoSettings = \App\Models\SeoSetting::query()->first())
+    @php($siteTitle = $seoSettings?->site_title ?: 'Nitro Motors USA')
+    @php($defaultTitle = $seoSettings?->default_meta_title ?: $siteTitle)
+    @php($metaTitle = trim($__env->yieldContent('title', $defaultTitle)))
+    @php($metaDescription = trim($__env->yieldContent('meta_description', $seoSettings?->default_meta_description ?: 'Modern car marketplace for premium vehicles across the USA.')))
+    @php($metaKeywords = trim($__env->yieldContent('meta_keywords', $seoSettings?->default_meta_keywords ?: '')))
+    @php($canonicalBaseUrl = rtrim($seoSettings?->canonical_base_url ?: config('app.url'), '/'))
+    @php($canonicalUrl = trim($__env->yieldContent('canonical', $canonicalBaseUrl . request()->getPathInfo())))
+    @php($robotsDirective = ($seoSettings?->enable_indexing ?? true) ? ($seoSettings?->robots_directive ?: 'index,follow') : 'noindex,nofollow')
+    @php($ogImage = trim($__env->yieldContent('og_image', $seoSettings?->default_og_image ?: asset('favicon.ico'))))
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
+    @if ($metaKeywords !== '')
+        <meta name="keywords" content="{{ $metaKeywords }}">
+    @endif
+    <meta name="robots" content="{{ $robotsDirective }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <meta property="og:site_name" content="{{ $siteTitle }}">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+    @if ($seoSettings?->google_search_console_verification)
+        <meta name="google-site-verification" content="{{ $seoSettings->google_search_console_verification }}">
+    @endif
+    @if ($seoSettings?->bing_webmaster_verification)
+        <meta name="msvalidate.01" content="{{ $seoSettings->bing_webmaster_verification }}">
+    @endif
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'AutoDealer',
+            'name' => $seoSettings?->business_name ?: $siteTitle,
+            'url' => $canonicalBaseUrl,
+            'telephone' => $seoSettings?->business_phone,
+            'email' => $seoSettings?->business_email,
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => $seoSettings?->business_address,
+            ],
+            'image' => $ogImage,
+        ], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}
+    </script>
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => $siteTitle,
+            'url' => $canonicalBaseUrl,
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => $canonicalBaseUrl . route('inventory.all', [], false) . '?keyword={search_term_string}',
+                'query-input' => 'required name=search_term_string',
+            ],
+        ], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -29,6 +88,15 @@
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '{{ $marketingSettings->google_tag_id }}');
+        </script>
+    @endif
+    @if ($seoSettings?->google_analytics_measurement_id)
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $seoSettings->google_analytics_measurement_id }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ $seoSettings->google_analytics_measurement_id }}');
         </script>
     @endif
     @if ($marketingSettings?->tiktok_pixel_id)

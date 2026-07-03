@@ -455,6 +455,12 @@
             word-break: break-all;
         }
 
+        .admin-mini-status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
         .admin-make-row {
             display: grid;
             gap: 8px;
@@ -575,6 +581,10 @@
 
         @media (max-width: 575.98px) {
             .admin-pixel-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-mini-status-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -807,6 +817,28 @@
                                 <div class="admin-pixel-id">
                                     {{ $pixel['value'] ?: 'Not connected yet' }}
                                 </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+
+                <section class="admin-panel">
+                    <div class="admin-panel-head">
+                        <div>
+                            <h2>SEO and Search Console</h2>
+                            <div class="admin-panel-note">Verification, indexing, and search visibility essentials.</div>
+                        </div>
+                        <a href="{{ route('admin.seo-settings.edit') }}" class="admin-view-link">Manage</a>
+                    </div>
+
+                    <div class="admin-mini-status-grid">
+                        @foreach ($seoStatuses as $seoStatus)
+                            <div class="admin-pixel-card">
+                                <div class="admin-pixel-top">
+                                    <div class="admin-pixel-name">{{ $seoStatus['label'] }}</div>
+                                    <span class="admin-pixel-badge {{ $seoStatus['value'] ? 'live' : 'off' }}">{{ $seoStatus['value'] ? 'Ready' : 'Missing' }}</span>
+                                </div>
+                                <div class="admin-pixel-id">{{ $seoStatus['value'] ?: 'Not configured yet' }}</div>
                             </div>
                         @endforeach
                     </div>

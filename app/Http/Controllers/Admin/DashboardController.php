@@ -8,6 +8,7 @@ use App\Models\ConsignmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
 use App\Models\MarketingSetting;
+use App\Models\SeoSetting;
 use App\Models\ShippingRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -62,6 +63,7 @@ class DashboardController extends Controller
 
         $recentActivity = $this->buildRecentActivity();
         $marketingSetting = MarketingSetting::current();
+        $seoSetting = SeoSetting::current();
         $pixelStatuses = [
             [
                 'label' => 'Meta / Instagram',
@@ -92,6 +94,24 @@ class DashboardController extends Controller
                 'label' => 'LinkedIn',
                 'value' => $marketingSetting->linkedin_partner_id,
                 'accent' => 'red',
+            ],
+        ];
+        $seoStatuses = [
+            [
+                'label' => 'Google Search Console',
+                'value' => $seoSetting->google_search_console_verification,
+            ],
+            [
+                'label' => 'Bing Webmaster',
+                'value' => $seoSetting->bing_webmaster_verification,
+            ],
+            [
+                'label' => 'Google Analytics',
+                'value' => $seoSetting->google_analytics_measurement_id,
+            ],
+            [
+                'label' => 'Canonical Base URL',
+                'value' => $seoSetting->canonical_base_url,
             ],
         ];
 
@@ -155,6 +175,7 @@ class DashboardController extends Controller
             'topMakes' => $topMakes,
             'recentActivity' => $recentActivity,
             'pixelStatuses' => $pixelStatuses,
+            'seoStatuses' => $seoStatuses,
             'recentConsignmentRequests' => ConsignmentRequest::latest()->take(5)->get(),
         ];
 

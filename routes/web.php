@@ -9,8 +9,11 @@ use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\MarketingSettingController;
+use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\ShippingRequestController;
 use App\Http\Controllers\Admin\SizeController;
+use App\Models\Inventory;
+use App\Models\SeoSetting;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +45,53 @@ Route::controller(PageController::class)->group(function () {
     Route::post('/services/consignment', 'sendConsignment')->name('services.consignment.send');
 });
 
+Route::get('/sitemap.xml', function () {
+    $settings = SeoSetting::current();
+    $baseUrl = rtrim($settings->canonical_base_url ?: config('app.url'), '/');
+
+    $urls = collect([
+        ['loc' => $baseUrl . route('home', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'daily', 'priority' => '1.0'],
+        ['loc' => $baseUrl . route('inventory.all', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'daily', 'priority' => '0.9'],
+        ['loc' => $baseUrl . route('inventory.sold', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('about', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('testimonials', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
+        ['loc' => $baseUrl . route('directions', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
+        ['loc' => $baseUrl . route('contact', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('appointment', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('services.shipping', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
+        ['loc' => $baseUrl . route('services.consignment', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
+    ])->merge(
+        Inventory::query()->get()->map(function (Inventory $inventory) use ($baseUrl) {
+            $route = $inventory->status === 'sold'
+                ? route('inventory.sold.detail', $inventory->stock, false)
+                : route('inventory.detail', $inventory->stock, false);
+
+            return [
+                'loc' => $baseUrl . $route,
+                'lastmod' => optional($inventory->updated_at ?: $inventory->created_at)->toAtomString() ?: now()->toAtomString(),
+                'changefreq' => 'weekly',
+                'priority' => $inventory->status === 'sold' ? '0.6' : '0.8',
+            ];
+        })
+    );
+
+    return response()
+        ->view('seo.sitemap', ['urls' => $urls], 200)
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');
+
+Route::get('/robots.txt', function () {
+    $settings = SeoSetting::current();
+    $baseUrl = rtrim($settings->canonical_base_url ?: config('app.url'), '/');
+    $robots = $settings->enable_indexing
+        ? "User-agent: *\nAllow: /\n"
+        : "User-agent: *\nDisallow: /\n";
+
+    $robots .= "\nSitemap: {$baseUrl}/sitemap.xml\n";
+
+    return response($robots, 200)->header('Content-Type', 'text/plain');
+})->name('robots');
+
 Route::prefix('admin')->group(function () {
     Route::middleware('guest')->controller(AuthController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('login');
@@ -54,6 +104,8 @@ Route::prefix('admin')->group(function () {
         Route::put('/account', [AuthController::class, 'updateAccount'])->name('admin.account.update');
         Route::get('/marketing-settings', [MarketingSettingController::class, 'edit'])->name('admin.marketing-settings.edit');
         Route::put('/marketing-settings', [MarketingSettingController::class, 'update'])->name('admin.marketing-settings.update');
+        Route::get('/seo-settings', [SeoSettingController::class, 'edit'])->name('admin.seo-settings.edit');
+        Route::put('/seo-settings', [SeoSettingController::class, 'update'])->name('admin.seo-settings.update');
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
