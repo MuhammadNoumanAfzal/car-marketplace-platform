@@ -491,7 +491,7 @@ class PageController extends Controller
             return asset($path);
         }
 
-        return Storage::disk('public')->url($path);
+        return asset('storage/' . ltrim($path, '/'));
     }
 
     private function formatMoney($amount): string
