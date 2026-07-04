@@ -4,15 +4,18 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppointmentRequest;
+use App\Models\BlogPost;
 use App\Models\ConsignmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
 use App\Models\SellYourCarRequest;
 use App\Models\ShippingRequest;
+use App\Models\TradeInRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Throwable;
 use Illuminate\View\View;
 
@@ -72,6 +75,54 @@ class PageController extends Controller
             'vehicle' => $this->presentInventory(
                 Inventory::query()->where('status', 'sold')->where('stock', $stock)->firstOrFail()
             ),
+        ]);
+    }
+
+    public function blog(): View
+    {
+        return view('user.blog.index', [
+            'posts' => BlogPost::query()
+                ->where('is_published', true)
+                ->where(function ($query) {
+                    $query->whereNull('published_at')->orWhere('published_at', '<=', now());
+                })
+                ->latest('published_at')
+                ->latest()
+                ->get()
+                ->map(function (BlogPost $post) {
+                    return [
+                        'title' => $post->title,
+                        'slug' => $post->slug,
+                        'excerpt' => Str::limit(strip_tags($post->excerpt ?: $post->content), 180),
+                        'author_name' => $post->author_name ?: 'Nitro Motors USA',
+                        'published_at' => optional($post->published_at ?: $post->created_at)?->format('M d, Y'),
+                        'image' => $this->blogImageUrl($post->featured_image),
+                    ];
+                })
+                ->all(),
+        ]);
+    }
+
+    public function blogDetail(string $slug): View
+    {
+        $post = BlogPost::query()
+            ->where('slug', $slug)
+            ->where('is_published', true)
+            ->where(function ($query) {
+                $query->whereNull('published_at')->orWhere('published_at', '<=', now());
+            })
+            ->firstOrFail();
+
+        return view('user.blog.detail', [
+            'post' => [
+                'title' => $post->title,
+                'excerpt' => strip_tags((string) $post->excerpt),
+                'content' => $post->content,
+                'author_name' => $post->author_name ?: 'Nitro Motors USA',
+                'published_at' => optional($post->published_at ?: $post->created_at)?->format('F d, Y'),
+                'image' => $this->blogImageUrl($post->featured_image),
+                'seo_description' => strip_tags((string) $post->seo_description),
+            ],
         ]);
     }
 
@@ -154,6 +205,93 @@ class PageController extends Controller
                 ->route('sell-your-car')
                 ->withInput()
                 ->with('status', 'We saved your submission, but email delivery could not be completed right now.')
+                ->with('status_type', 'error')
+                ->with('status_title', 'Mail Send Failed');
+        }
+    }
+
+    public function tradeIn(): View
+    {
+        return view('user.tradein.trade-in', [
+            'years' => range(date('Y'), date('Y') - 15),
+            'states' => [
+                'Florida',
+                'Texas',
+                'California',
+                'New York',
+                'Georgia',
+            ],
+            'timelines' => [
+                'This week',
+                'Within 2 weeks',
+                'This month',
+                'Just exploring options',
+            ],
+            'budgets' => [
+                'Under $25,000',
+                '$25,000 - $50,000',
+                '$50,000 - $75,000',
+                '$75,000+',
+            ],
+        ]);
+    }
+
+    public function sendTradeIn(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'current_vehicle_year' => ['required', 'string', 'max:10'],
+            'current_make' => ['required', 'string', 'max:80'],
+            'current_model' => ['required', 'string', 'max:80'],
+            'current_trim' => ['nullable', 'string', 'max:80'],
+            'current_mileage' => ['required', 'string', 'max:30'],
+            'current_vin' => ['nullable', 'string', 'max:80'],
+            'trade_payoff' => ['nullable', 'string', 'max:50'],
+            'desired_vehicle' => ['nullable', 'string', 'max:150'],
+            'budget_range' => ['nullable', 'string', 'max:80'],
+            'purchase_timeline' => ['nullable', 'string', 'max:80'],
+            'condition_notes' => ['nullable', 'string', 'max:1800'],
+            'first_name' => ['required', 'string', 'max:60'],
+            'last_name' => ['required', 'string', 'max:60'],
+            'email' => ['required', 'email', 'max:120'],
+            'phone' => ['required', 'string', 'max:30'],
+            'city' => ['nullable', 'string', 'max:80'],
+            'state' => ['nullable', 'string', 'max:80'],
+        ]);
+
+        TradeInRequest::create($validated);
+
+        try {
+            $contactRecipient = config('mail.contact_recipient', [
+                'address' => 'info@nitromotorsusa.com',
+                'name' => 'Nitro Motors USA',
+            ]);
+
+            Mail::send('emails.trade-in-request', [
+                'requestData' => $validated,
+            ], function ($message) use ($validated, $contactRecipient) {
+                $message
+                    ->to($contactRecipient['address'] ?? 'info@nitromotorsusa.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->replyTo($validated['email'], $validated['first_name'] . ' ' . $validated['last_name'])
+                    ->subject('New Nitro Motors USA trade-in request: ' . $validated['current_vehicle_year'] . ' ' . $validated['current_make'] . ' ' . $validated['current_model']);
+            });
+
+            logger()->info('Nitro Motors USA trade-in request sent.', $validated);
+
+            return redirect()
+                ->route('trade-in')
+                ->with('status', 'Your trade-in request has been sent successfully.')
+                ->with('status_type', 'success')
+                ->with('status_title', 'Trade-In Requested');
+        } catch (Throwable $exception) {
+            logger()->error('Nitro Motors USA trade-in request failed to send.', [
+                'error' => $exception->getMessage(),
+                'payload' => $validated,
+            ]);
+
+            return redirect()
+                ->route('trade-in')
+                ->withInput()
+                ->with('status', 'We saved your trade-in request, but email delivery could not be completed right now.')
                 ->with('status_type', 'error')
                 ->with('status_title', 'Mail Send Failed');
         }
@@ -760,6 +898,25 @@ class PageController extends Controller
     private function formatMoney($amount): string
     {
         return '$' . number_format((float) $amount, 0);
+    }
+
+    private function blogImageUrl(?string $path): string
+    {
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return asset('demo/inventory/hero-suv-road.jpg');
+        }
+
+        if (preg_match('/^https?:\/\//i', $path)) {
+            return $path;
+        }
+
+        if (str_starts_with($path, 'storage/')) {
+            return asset($path);
+        }
+
+        return asset('storage/' . ltrim($path, '/'));
     }
 
     private function reasons(): array

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppointmentRequest;
+use App\Models\BlogPost;
 use App\Models\ConsignmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
@@ -11,6 +12,7 @@ use App\Models\MarketingSetting;
 use App\Models\SeoSetting;
 use App\Models\SellYourCarRequest;
 use App\Models\ShippingRequest;
+use App\Models\TradeInRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
@@ -28,12 +30,14 @@ class DashboardController extends Controller
         $shippingCount = ShippingRequest::count();
         $consignmentCount = ConsignmentRequest::count();
         $sellYourCarCount = SellYourCarRequest::count();
+        $tradeInCount = TradeInRequest::count();
+        $blogCount = BlogPost::count();
         $availableCount = Inventory::where('status', 'available')->count();
         $soldCount = Inventory::where('status', 'sold')->count();
         $featuredCount = Inventory::where('is_featured', true)->count();
         $inventoryValue = (float) Inventory::sum('price');
         $averagePrice = (float) Inventory::avg('price');
-        $leadTotal = $contactCount + $appointmentCount + $shippingCount + $consignmentCount + $sellYourCarCount;
+        $leadTotal = $contactCount + $appointmentCount + $shippingCount + $consignmentCount + $sellYourCarCount + $tradeInCount;
 
         $months = collect(range(5, 0, -1))
             ->map(fn (int $offset) => now()->startOfMonth()->subMonths($offset))
@@ -46,7 +50,8 @@ class DashboardController extends Controller
                 + AppointmentRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
                 + ShippingRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
                 + ConsignmentRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
-                + SellYourCarRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count();
+                + SellYourCarRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
+                + TradeInRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count();
 
             return [
                 'label' => $monthStart->format('M'),
@@ -165,6 +170,20 @@ class DashboardController extends Controller
                     'accent' => 'red',
                     'meta' => 'Direct owner submissions',
                 ],
+                [
+                    'label' => 'Trade-In Requests',
+                    'count' => $tradeInCount,
+                    'route' => route('admin.trade-in-requests.index'),
+                    'accent' => 'blue',
+                    'meta' => 'Upgrade and swap leads',
+                ],
+                [
+                    'label' => 'Blog Posts',
+                    'count' => $blogCount,
+                    'route' => route('admin.blog.index'),
+                    'accent' => 'red',
+                    'meta' => 'Published and draft articles',
+                ],
             ],
             'inventorySummary' => [
                 'total' => $inventoryCount,
@@ -181,6 +200,7 @@ class DashboardController extends Controller
                 'shipping' => $shippingCount,
                 'consignment' => $consignmentCount,
                 'sell_your_car' => $sellYourCarCount,
+                'trade_in' => $tradeInCount,
             ],
             'monthlyLeadSeries' => $monthlyLeadSeries,
             'topMakes' => $topMakes,
@@ -189,6 +209,7 @@ class DashboardController extends Controller
             'seoStatuses' => $seoStatuses,
             'recentConsignmentRequests' => ConsignmentRequest::latest()->take(5)->get(),
             'recentSellYourCarRequests' => SellYourCarRequest::latest()->take(5)->get(),
+            'recentTradeInRequests' => TradeInRequest::latest()->take(5)->get(),
         ];
 
         return view('admin.dashboard.dashboard', $data);
@@ -249,6 +270,28 @@ class DashboardController extends Controller
                 'meta' => trim($item->vehicle_year . ' ' . $item->make . ' ' . $item->model),
                 'timestamp' => $item->created_at,
                 'route' => route('admin.sell-your-car-requests.show', $item),
+                'accent' => 'red',
+            ]);
+        });
+
+        TradeInRequest::latest()->take(3)->get()->each(function (TradeInRequest $item) use ($items) {
+            $items->push([
+                'type' => 'Trade-In',
+                'title' => trim($item->first_name . ' ' . $item->last_name),
+                'meta' => trim($item->current_vehicle_year . ' ' . $item->current_make . ' ' . $item->current_model),
+                'timestamp' => $item->created_at,
+                'route' => route('admin.trade-in-requests.show', $item),
+                'accent' => 'blue',
+            ]);
+        });
+
+        BlogPost::latest()->take(3)->get()->each(function (BlogPost $item) use ($items) {
+            $items->push([
+                'type' => 'Blog',
+                'title' => $item->title,
+                'meta' => $item->is_published ? 'Published article' : 'Draft article',
+                'timestamp' => $item->updated_at ?: $item->created_at,
+                'route' => route('admin.blog.show', $item),
                 'accent' => 'red',
             ]);
         });

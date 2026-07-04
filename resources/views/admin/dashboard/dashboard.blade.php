@@ -666,7 +666,7 @@
                 <div class="admin-hero-mini">
                     <div class="admin-hero-mini-label">Lead Volume</div>
                     <div class="admin-hero-mini-value">{{ $leadSummary['total'] }}</div>
-                    <div class="admin-hero-mini-note">Contact, shipping, appointments, consignment, and sell-your-car leads.</div>
+                    <div class="admin-hero-mini-note">Contact, shipping, appointments, consignment, sell-your-car, and trade-in leads.</div>
                 </div>
                 <div class="admin-hero-mini">
                     <div class="admin-hero-mini-label">Featured Units</div>

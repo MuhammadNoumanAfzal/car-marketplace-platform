@@ -10,6 +10,7 @@
 
         <nav class="hidden items-center gap-8 text-sm font-medium text-zinc-200 lg:flex">
             <a href="{{ route('home') }}" class="header-link {{ request()->routeIs('home') ? 'is-active' : '' }}">Home</a>
+            <a href="{{ route('blog.index') }}" class="header-link {{ request()->routeIs('blog.index', 'blog.detail') ? 'is-active' : '' }}">Blog</a>
 
             <div class="header-dropdown">
                 <a href="{{ route('inventory.all') }}" class="header-link {{ request()->routeIs('inventory.all', 'inventory.sold') ? 'is-active' : '' }}">
@@ -22,11 +23,12 @@
             </div>
 
             <div class="header-dropdown">
-                <a href="{{ route('services.shipping') }}" class="header-link {{ request()->routeIs('services.shipping', 'services.consignment', 'sell-your-car', 'financing') ? 'is-active' : '' }}">
+                <a href="{{ route('services.shipping') }}" class="header-link {{ request()->routeIs('services.shipping', 'services.consignment', 'sell-your-car', 'trade-in', 'financing') ? 'is-active' : '' }}">
                     <span>Services</span>
                 </a>
                 <div class="header-dropdown__menu">
                     <a href="{{ route('sell-your-car') }}" class="header-dropdown__item">Sell Your Car</a>
+                    <a href="{{ route('trade-in') }}" class="header-dropdown__item">Trade-In</a>
                     <a href="{{ route('financing') }}" class="header-dropdown__item">Financing</a>
                     <a href="{{ route('services.shipping') }}" class="header-dropdown__item">Vehicle Shipping</a>
                     <a href="{{ route('services.consignment') }}" class="header-dropdown__item">Consignment</a>

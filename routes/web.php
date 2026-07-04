@@ -4,6 +4,7 @@ use App\Http\Controllers\User\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AppointmentRequestController;
+use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\ConsignmentRequestController;
 use App\Http\Controllers\Admin\ContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\SellYourCarRequestController;
 use App\Http\Controllers\Admin\ShippingRequestController;
 use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\TradeInRequestController;
+use App\Models\BlogPost;
 use App\Models\Inventory;
 use App\Models\SeoSetting;
 
@@ -29,12 +32,16 @@ use App\Models\SeoSetting;
 
 Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
+    Route::get('/blog', 'blog')->name('blog.index');
+    Route::get('/blog/{slug}', 'blogDetail')->name('blog.detail');
     Route::get('/inventory', 'inventory')->name('inventory.all');
     Route::get('/inventory/sold', 'soldInventory')->name('inventory.sold');
     Route::get('/inventory/sold/{stock}', 'soldInventoryDetail')->name('inventory.sold.detail');
     Route::get('/inventory/{stock}', 'inventoryDetail')->name('inventory.detail');
     Route::get('/sell-your-car', 'sellYourCar')->name('sell-your-car');
     Route::post('/sell-your-car', 'sendSellYourCar')->name('sell-your-car.send');
+    Route::get('/trade-in', 'tradeIn')->name('trade-in');
+    Route::post('/trade-in', 'sendTradeIn')->name('trade-in.send');
     Route::get('/financing', 'financing')->name('financing');
     Route::get('/about-us', 'about')->name('about');
     Route::get('/testimonials', 'testimonials')->name('testimonials');
@@ -55,9 +62,11 @@ Route::get('/sitemap.xml', function () {
 
     $urls = collect([
         ['loc' => $baseUrl . route('home', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'daily', 'priority' => '1.0'],
+        ['loc' => $baseUrl . route('blog.index', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('inventory.all', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'daily', 'priority' => '0.9'],
         ['loc' => $baseUrl . route('inventory.sold', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('sell-your-car', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('trade-in', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('financing', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('about', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('testimonials', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
@@ -67,6 +76,21 @@ Route::get('/sitemap.xml', function () {
         ['loc' => $baseUrl . route('services.shipping', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
         ['loc' => $baseUrl . route('services.consignment', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
     ])->merge(
+        BlogPost::query()
+            ->where('is_published', true)
+            ->where(function ($query) {
+                $query->whereNull('published_at')->orWhere('published_at', '<=', now());
+            })
+            ->get()
+            ->map(function (BlogPost $post) use ($baseUrl) {
+                return [
+                    'loc' => $baseUrl . route('blog.detail', $post->slug, false),
+                    'lastmod' => optional($post->updated_at ?: $post->created_at)->toAtomString() ?: now()->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.6',
+                ];
+            })
+    )->merge(
         Inventory::query()->get()->map(function (Inventory $inventory) use ($baseUrl) {
             $route = $inventory->status === 'sold'
                 ? route('inventory.sold.detail', $inventory->stock, false)
@@ -125,6 +149,16 @@ Route::prefix('admin')->group(function () {
             Route::delete('/delete/{inventory}', 'destroy')->name('admin.inventory.destroy');
         });
 
+        Route::prefix('blog')->controller(BlogPostController::class)->group(function () {
+            Route::get('/index', 'index')->name('admin.blog.index');
+            Route::get('/create', 'create')->name('admin.blog.create');
+            Route::post('/store', 'store')->name('admin.blog.store');
+            Route::get('/show/{blogPost}', 'show')->name('admin.blog.show');
+            Route::get('/edit/{blogPost}', 'edit')->name('admin.blog.edit');
+            Route::put('/update/{blogPost}', 'update')->name('admin.blog.update');
+            Route::delete('/delete/{blogPost}', 'destroy')->name('admin.blog.destroy');
+        });
+
         Route::prefix('contact-inquiries')->controller(ContactInquiryController::class)->group(function () {
             Route::get('/index', 'index')->name('admin.contact-inquiries.index');
             Route::get('/show/{contactInquiry}', 'show')->name('admin.contact-inquiries.show');
@@ -153,6 +187,12 @@ Route::prefix('admin')->group(function () {
             Route::get('/index', 'index')->name('admin.sell-your-car-requests.index');
             Route::get('/show/{sellYourCarRequest}', 'show')->name('admin.sell-your-car-requests.show');
             Route::delete('/delete/{sellYourCarRequest}', 'destroy')->name('admin.sell-your-car-requests.destroy');
+        });
+
+        Route::prefix('trade-in-requests')->controller(TradeInRequestController::class)->group(function () {
+            Route::get('/index', 'index')->name('admin.trade-in-requests.index');
+            Route::get('/show/{tradeInRequest}', 'show')->name('admin.trade-in-requests.show');
+            Route::delete('/delete/{tradeInRequest}', 'destroy')->name('admin.trade-in-requests.destroy');
         });
     });
 });

@@ -63,6 +63,22 @@
 
         .nav-left-sidebar.sidebar-dark {
             background: linear-gradient(180deg, #091833 0%, #102b5e 100%);
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .nav-left-sidebar.sidebar-dark::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .nav-left-sidebar.sidebar-dark::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+        }
+
+        .nav-left-sidebar.sidebar-dark::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .nav-left-sidebar .nav-link,
@@ -200,6 +216,22 @@
                                 </div>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link @if ($active == 'blog') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'blog' ? 'true' : 'false' }}"
+                                    data-target="#submenu-blog"
+                                    aria-controls="submenu-blog">
+                                    <i class="fa fa-fw fa-newspaper"></i> Blog
+                                </a>
+                                <div id="submenu-blog" class="collapse submenu @if ($active == 'blog') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.blog.index') }}">View All</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.blog.create') }}">Add</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link @if ($active == 'contact-inquiries') active @endif"
                                     href="#"
                                     data-toggle="collapse"
@@ -271,6 +303,21 @@
                                 <div id="submenu-sell-your-car-requests" class="collapse submenu @if ($active == 'sell-your-car-requests') show @endif">
                                     <ul class="nav flex-column">
                                         <li class="nav-item"><a class="nav-link" href="{{ route('admin.sell-your-car-requests.index') }}">View All</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'trade-in-requests') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'trade-in-requests' ? 'true' : 'false' }}"
+                                    data-target="#submenu-trade-in-requests"
+                                    aria-controls="submenu-trade-in-requests">
+                                    <i class="fa fa-fw fa-exchange-alt"></i> Trade-In Requests
+                                </a>
+                                <div id="submenu-trade-in-requests" class="collapse submenu @if ($active == 'trade-in-requests') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.trade-in-requests.index') }}">View All</a></li>
                                     </ul>
                                 </div>
                             </li>
