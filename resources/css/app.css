@@ -1211,20 +1211,24 @@
   }
 
   .blog-grid {
-    @apply grid gap-6 lg:grid-cols-3;
+    @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3;
   }
 
   .blog-card {
-    @apply overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.98),rgba(8,8,10,0.98))];
+    @apply flex h-full flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(225,29,46,0.14),transparent_30%),linear-gradient(180deg,rgba(18,18,20,0.98),rgba(8,8,10,0.98))] transition duration-300 hover:-translate-y-1 hover:border-ember/30;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 24px 60px rgba(0,0,0,0.2);
   }
 
   .blog-card__media {
-    @apply block overflow-hidden border-b border-white/10;
+    @apply relative block overflow-hidden border-b border-white/10;
   }
 
   .blog-card__image {
     @apply h-64 w-full bg-cover bg-center transition duration-500;
+  }
+
+  .blog-card__overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent;
   }
 
   .blog-card:hover .blog-card__image {
@@ -1232,15 +1236,23 @@
   }
 
   .blog-card__body {
-    @apply p-6 sm:p-7;
+    @apply flex flex-1 flex-col p-6 sm:p-7;
+  }
+
+  .blog-card__top {
+    @apply flex flex-wrap items-center justify-between gap-3;
+  }
+
+  .blog-card__tag {
+    @apply inline-flex items-center rounded-full border border-ember/20 bg-ember/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white;
   }
 
   .blog-card__meta {
-    @apply text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400;
+    @apply text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-zinc-400;
   }
 
   .blog-card__title {
-    @apply mt-4 font-display text-2xl font-semibold leading-tight text-white;
+    @apply mt-5 font-display text-[1.8rem] font-semibold leading-tight text-white;
   }
 
   .blog-card__title a {
@@ -1248,7 +1260,19 @@
   }
 
   .blog-card__copy {
-    @apply mt-4 text-sm leading-8 text-zinc-300;
+    @apply mt-4 flex-1 text-sm leading-8 text-zinc-300;
+  }
+
+  .blog-card__footer {
+    @apply mt-6 border-t border-white/10 pt-5;
+  }
+
+  .blog-card__link {
+    @apply inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:border-ember/35 hover:bg-ember/10;
+  }
+
+  .blog-card__arrow {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-full bg-ember text-sm text-white;
   }
 
   .blog-empty {
@@ -1256,13 +1280,53 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
-  .blog-detail {
-    @apply rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.98),rgba(8,8,10,0.98))] p-7 sm:p-9;
+  .blog-detail-layout {
+    @apply grid gap-6 xl:grid-cols-[320px_1fr];
+  }
+
+  .blog-detail-sidebar {
+    @apply space-y-5 xl:sticky xl:top-28 xl:self-start;
+  }
+
+  .blog-detail-info-card,
+  .blog-detail-action-card,
+  .blog-detail-article {
+    @apply rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.98),rgba(8,8,10,0.98))] p-7 sm:p-8;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 24px 60px rgba(0,0,0,0.2);
   }
 
+  .blog-detail-info-card__label,
+  .blog-detail-action-card__eyebrow,
+  .blog-detail-article__badge {
+    @apply text-xs font-semibold uppercase tracking-[0.28em] text-ember;
+  }
+
+  .blog-detail-info-card__value {
+    @apply mt-3 font-display text-xl font-semibold text-white;
+  }
+
+  .blog-detail-info-card__copy {
+    @apply mt-3 text-sm leading-7 text-zinc-300;
+  }
+
+  .blog-detail-action-card__title {
+    @apply mt-4 font-display text-2xl font-semibold leading-tight text-white;
+  }
+
+  .blog-detail-action-card__actions {
+    @apply mt-6 flex flex-col items-start gap-4;
+  }
+
+  .blog-detail-article__head {
+    @apply border-b border-white/10 pb-6;
+  }
+
   .blog-detail__meta {
-    @apply text-xs font-semibold uppercase tracking-[0.26em] text-zinc-400;
+    @apply mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400;
+  }
+
+  .blog-detail-article__lede {
+    @apply mt-5 max-w-3xl text-base leading-8 text-zinc-200;
   }
 
   .blog-detail__content {
