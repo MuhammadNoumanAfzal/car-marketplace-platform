@@ -666,7 +666,7 @@
                 <div class="admin-hero-mini">
                     <div class="admin-hero-mini-label">Lead Volume</div>
                     <div class="admin-hero-mini-value">{{ $leadSummary['total'] }}</div>
-                    <div class="admin-hero-mini-note">Contact, shipping, appointments, and consignments.</div>
+                    <div class="admin-hero-mini-note">Contact, shipping, appointments, consignment, and sell-your-car leads.</div>
                 </div>
                 <div class="admin-hero-mini">
                     <div class="admin-hero-mini-label">Featured Units</div>
@@ -907,6 +907,46 @@
                                     <td>{{ $request->created_at->format('M d, Y h:i A') }}</td>
                                     <td>
                                         <a href="{{ route('admin.consignment-requests.show', $request) }}" class="admin-view-link">View</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </section>
+
+        <section class="admin-panel">
+            <div class="admin-panel-head">
+                <div>
+                    <h2>Recent Sell Your Car Requests</h2>
+                    <div class="admin-panel-note">Direct owner submissions from the Sell Your Car page.</div>
+                </div>
+            </div>
+
+            @if ($recentSellYourCarRequests->isEmpty())
+                <div class="admin-empty-state">No sell your car requests have been submitted yet.</div>
+            @else
+                <div class="table-responsive">
+                    <table class="admin-recent-table">
+                        <thead>
+                            <tr>
+                                <th>Owner</th>
+                                <th>Vehicle</th>
+                                <th>Phone</th>
+                                <th>Submitted</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($recentSellYourCarRequests as $request)
+                                <tr>
+                                    <td>{{ $request->first_name }} {{ $request->last_name }}</td>
+                                    <td>{{ $request->vehicle_year }} {{ $request->make }} {{ $request->model }}</td>
+                                    <td>{{ $request->phone }}</td>
+                                    <td>{{ $request->created_at->format('M d, Y h:i A') }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.sell-your-car-requests.show', $request) }}" class="admin-view-link">View</a>
                                     </td>
                                 </tr>
                             @endforeach

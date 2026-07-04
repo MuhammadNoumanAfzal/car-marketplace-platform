@@ -259,6 +259,21 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link @if ($active == 'sell-your-car-requests') active @endif"
+                                    href="#"
+                                    data-toggle="collapse"
+                                    aria-expanded="{{ $active == 'sell-your-car-requests' ? 'true' : 'false' }}"
+                                    data-target="#submenu-sell-your-car-requests"
+                                    aria-controls="submenu-sell-your-car-requests">
+                                    <i class="fa fa-fw fa-handshake"></i> Sell Your Car Requests
+                                </a>
+                                <div id="submenu-sell-your-car-requests" class="collapse submenu @if ($active == 'sell-your-car-requests') show @endif">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('admin.sell-your-car-requests.index') }}">View All</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>

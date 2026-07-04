@@ -22,10 +22,12 @@
             </div>
 
             <div class="header-dropdown">
-                <a href="{{ route('services.shipping') }}" class="header-link {{ request()->routeIs('services.shipping', 'services.consignment') ? 'is-active' : '' }}">
+                <a href="{{ route('services.shipping') }}" class="header-link {{ request()->routeIs('services.shipping', 'services.consignment', 'sell-your-car', 'financing') ? 'is-active' : '' }}">
                     <span>Services</span>
                 </a>
                 <div class="header-dropdown__menu">
+                    <a href="{{ route('sell-your-car') }}" class="header-dropdown__item">Sell Your Car</a>
+                    <a href="{{ route('financing') }}" class="header-dropdown__item">Financing</a>
                     <a href="{{ route('services.shipping') }}" class="header-dropdown__item">Vehicle Shipping</a>
                     <a href="{{ route('services.consignment') }}" class="header-dropdown__item">Consignment</a>
                 </div>

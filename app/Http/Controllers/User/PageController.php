@@ -7,6 +7,7 @@ use App\Models\AppointmentRequest;
 use App\Models\ConsignmentRequest;
 use App\Models\ContactInquiry;
 use App\Models\Inventory;
+use App\Models\SellYourCarRequest;
 use App\Models\ShippingRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -71,6 +72,134 @@ class PageController extends Controller
             'vehicle' => $this->presentInventory(
                 Inventory::query()->where('status', 'sold')->where('stock', $stock)->firstOrFail()
             ),
+        ]);
+    }
+
+    public function sellYourCar(): View
+    {
+        return view('user.sell.sell-your-car', [
+            'years' => range(date('Y'), date('Y') - 15),
+            'transmissions' => [
+                'Automatic',
+                'Manual',
+                'CVT',
+                'Dual-clutch',
+            ],
+            'states' => [
+                'Florida',
+                'Texas',
+                'California',
+                'New York',
+                'Georgia',
+            ],
+        ]);
+    }
+
+    public function sendSellYourCar(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'vehicle_year' => ['required', 'string', 'max:10'],
+            'make' => ['required', 'string', 'max:80'],
+            'model' => ['required', 'string', 'max:80'],
+            'trim' => ['nullable', 'string', 'max:80'],
+            'exterior_color' => ['nullable', 'string', 'max:50'],
+            'interior_color' => ['nullable', 'string', 'max:50'],
+            'cylinders' => ['nullable', 'string', 'max:20'],
+            'liters' => ['nullable', 'string', 'max:20'],
+            'mileage' => ['required', 'string', 'max:30'],
+            'transmission' => ['required', 'string', 'max:40'],
+            'lien_holder' => ['nullable', 'string', 'max:120'],
+            'additional_options' => ['nullable', 'string', 'max:2000'],
+            'first_name' => ['required', 'string', 'max:60'],
+            'last_name' => ['required', 'string', 'max:60'],
+            'address' => ['required', 'string', 'max:150'],
+            'city' => ['required', 'string', 'max:80'],
+            'state' => ['required', 'string', 'max:80'],
+            'zip' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email', 'max:120'],
+            'phone' => ['required', 'string', 'max:30'],
+        ]);
+
+        SellYourCarRequest::create($validated);
+
+        try {
+            $contactRecipient = config('mail.contact_recipient', [
+                'address' => 'info@nitromotorsusa.com',
+                'name' => 'Nitro Motors USA',
+            ]);
+
+            Mail::send('emails.sell-your-car-request', [
+                'requestData' => $validated,
+            ], function ($message) use ($validated, $contactRecipient) {
+                $message
+                    ->to($contactRecipient['address'] ?? 'info@nitromotorsusa.com', $contactRecipient['name'] ?? 'Nitro Motors USA')
+                    ->replyTo($validated['email'], $validated['first_name'] . ' ' . $validated['last_name'])
+                    ->subject('New Nitro Motors USA Sell Your Car request: ' . $validated['vehicle_year'] . ' ' . $validated['make'] . ' ' . $validated['model']);
+            });
+
+            logger()->info('Nitro Motors USA sell your car request sent.', $validated);
+
+            return redirect()
+                ->route('sell-your-car')
+                ->with('status', 'Your vehicle submission has been sent successfully.')
+                ->with('status_type', 'success')
+                ->with('status_title', 'Request Sent');
+        } catch (Throwable $exception) {
+            logger()->error('Nitro Motors USA sell your car request failed to send.', [
+                'error' => $exception->getMessage(),
+                'payload' => $validated,
+            ]);
+
+            return redirect()
+                ->route('sell-your-car')
+                ->withInput()
+                ->with('status', 'We saved your submission, but email delivery could not be completed right now.')
+                ->with('status_type', 'error')
+                ->with('status_title', 'Mail Send Failed');
+        }
+    }
+
+    public function financing(): View
+    {
+        return view('user.financing.financing', [
+            'benefits' => [
+                [
+                    'title' => 'Multiple lender paths',
+                    'copy' => 'We help buyers explore financing options that fit credit profile, budget, and vehicle goals without making the process feel overwhelming.',
+                ],
+                [
+                    'title' => 'Remote-friendly process',
+                    'copy' => 'From first conversation to paperwork review, we keep the financing path organized for both local and out-of-state buyers.',
+                ],
+                [
+                    'title' => 'Payment-focused guidance',
+                    'copy' => 'We help you think in real monthly-budget terms, down payment scenarios, and ownership comfort instead of guesswork.',
+                ],
+            ],
+            'steps' => [
+                'Choose a vehicle or tell us what you are shopping for.',
+                'Share budget, trade-in details, and preferred down payment range.',
+                'Review financing options and next-step paperwork with our team.',
+            ],
+            'highlights' => [
+                ['label' => 'Fast Response', 'value' => 'Same-day guidance on most financing questions'],
+                ['label' => 'Buyer Support', 'value' => 'Help for first-time, repeat, and remote buyers'],
+                ['label' => 'Flexible Planning', 'value' => 'Trade-in, down payment, and term strategy support'],
+            ],
+            'faqs' => [
+                [
+                    'question' => 'Can I apply before choosing a vehicle?',
+                    'answer' => 'Yes. Starting early can help you understand budget range, down payment strategy, and what type of vehicle makes sense before you commit.',
+                ],
+                [
+                    'question' => 'Do you help with trade-ins during financing?',
+                    'answer' => 'Yes. Trade-in value can be part of the full payment picture, so we help buyers plan both sides together.',
+                ],
+                [
+                    'question' => 'Is financing available for out-of-state buyers?',
+                    'answer' => 'Yes. We support remote buyers and help organize the financing conversation alongside delivery and paperwork planning.',
+                ],
+            ],
         ]);
     }
 

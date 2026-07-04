@@ -9,6 +9,7 @@ use App\Models\ContactInquiry;
 use App\Models\Inventory;
 use App\Models\MarketingSetting;
 use App\Models\SeoSetting;
+use App\Models\SellYourCarRequest;
 use App\Models\ShippingRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -26,12 +27,13 @@ class DashboardController extends Controller
         $appointmentCount = AppointmentRequest::count();
         $shippingCount = ShippingRequest::count();
         $consignmentCount = ConsignmentRequest::count();
+        $sellYourCarCount = SellYourCarRequest::count();
         $availableCount = Inventory::where('status', 'available')->count();
         $soldCount = Inventory::where('status', 'sold')->count();
         $featuredCount = Inventory::where('is_featured', true)->count();
         $inventoryValue = (float) Inventory::sum('price');
         $averagePrice = (float) Inventory::avg('price');
-        $leadTotal = $contactCount + $appointmentCount + $shippingCount + $consignmentCount;
+        $leadTotal = $contactCount + $appointmentCount + $shippingCount + $consignmentCount + $sellYourCarCount;
 
         $months = collect(range(5, 0, -1))
             ->map(fn (int $offset) => now()->startOfMonth()->subMonths($offset))
@@ -43,7 +45,8 @@ class DashboardController extends Controller
             $count = ContactInquiry::whereBetween('created_at', [$monthStart, $monthEnd])->count()
                 + AppointmentRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
                 + ShippingRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
-                + ConsignmentRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count();
+                + ConsignmentRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count()
+                + SellYourCarRequest::whereBetween('created_at', [$monthStart, $monthEnd])->count();
 
             return [
                 'label' => $monthStart->format('M'),
@@ -155,6 +158,13 @@ class DashboardController extends Controller
                     'accent' => 'blue',
                     'meta' => 'Seller leads',
                 ],
+                [
+                    'label' => 'Sell Your Car Requests',
+                    'count' => $sellYourCarCount,
+                    'route' => route('admin.sell-your-car-requests.index'),
+                    'accent' => 'red',
+                    'meta' => 'Direct owner submissions',
+                ],
             ],
             'inventorySummary' => [
                 'total' => $inventoryCount,
@@ -170,6 +180,7 @@ class DashboardController extends Controller
                 'appointment' => $appointmentCount,
                 'shipping' => $shippingCount,
                 'consignment' => $consignmentCount,
+                'sell_your_car' => $sellYourCarCount,
             ],
             'monthlyLeadSeries' => $monthlyLeadSeries,
             'topMakes' => $topMakes,
@@ -177,6 +188,7 @@ class DashboardController extends Controller
             'pixelStatuses' => $pixelStatuses,
             'seoStatuses' => $seoStatuses,
             'recentConsignmentRequests' => ConsignmentRequest::latest()->take(5)->get(),
+            'recentSellYourCarRequests' => SellYourCarRequest::latest()->take(5)->get(),
         ];
 
         return view('admin.dashboard.dashboard', $data);
@@ -227,6 +239,17 @@ class DashboardController extends Controller
                 'timestamp' => $item->created_at,
                 'route' => route('admin.consignment-requests.show', $item),
                 'accent' => 'blue',
+            ]);
+        });
+
+        SellYourCarRequest::latest()->take(3)->get()->each(function (SellYourCarRequest $item) use ($items) {
+            $items->push([
+                'type' => 'Sell Your Car',
+                'title' => trim($item->first_name . ' ' . $item->last_name),
+                'meta' => trim($item->vehicle_year . ' ' . $item->make . ' ' . $item->model),
+                'timestamp' => $item->created_at,
+                'route' => route('admin.sell-your-car-requests.show', $item),
+                'accent' => 'red',
             ]);
         });
 

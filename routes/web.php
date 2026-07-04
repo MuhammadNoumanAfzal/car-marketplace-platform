@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\MarketingSettingController;
 use App\Http\Controllers\Admin\SeoSettingController;
+use App\Http\Controllers\Admin\SellYourCarRequestController;
 use App\Http\Controllers\Admin\ShippingRequestController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Models\Inventory;
@@ -32,6 +33,9 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/inventory/sold', 'soldInventory')->name('inventory.sold');
     Route::get('/inventory/sold/{stock}', 'soldInventoryDetail')->name('inventory.sold.detail');
     Route::get('/inventory/{stock}', 'inventoryDetail')->name('inventory.detail');
+    Route::get('/sell-your-car', 'sellYourCar')->name('sell-your-car');
+    Route::post('/sell-your-car', 'sendSellYourCar')->name('sell-your-car.send');
+    Route::get('/financing', 'financing')->name('financing');
     Route::get('/about-us', 'about')->name('about');
     Route::get('/testimonials', 'testimonials')->name('testimonials');
     Route::get('/directions', 'directions')->name('directions');
@@ -53,6 +57,8 @@ Route::get('/sitemap.xml', function () {
         ['loc' => $baseUrl . route('home', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'daily', 'priority' => '1.0'],
         ['loc' => $baseUrl . route('inventory.all', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'daily', 'priority' => '0.9'],
         ['loc' => $baseUrl . route('inventory.sold', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('sell-your-car', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
+        ['loc' => $baseUrl . route('financing', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('about', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.7'],
         ['loc' => $baseUrl . route('testimonials', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
         ['loc' => $baseUrl . route('directions', [], false), 'lastmod' => now()->toAtomString(), 'changefreq' => 'monthly', 'priority' => '0.6'],
@@ -141,6 +147,12 @@ Route::prefix('admin')->group(function () {
             Route::get('/index', 'index')->name('admin.consignment-requests.index');
             Route::get('/show/{consignmentRequest}', 'show')->name('admin.consignment-requests.show');
             Route::delete('/delete/{consignmentRequest}', 'destroy')->name('admin.consignment-requests.destroy');
+        });
+
+        Route::prefix('sell-your-car-requests')->controller(SellYourCarRequestController::class)->group(function () {
+            Route::get('/index', 'index')->name('admin.sell-your-car-requests.index');
+            Route::get('/show/{sellYourCarRequest}', 'show')->name('admin.sell-your-car-requests.show');
+            Route::delete('/delete/{sellYourCarRequest}', 'destroy')->name('admin.sell-your-car-requests.destroy');
         });
     });
 });
