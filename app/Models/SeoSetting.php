@@ -38,9 +38,9 @@ class SeoSetting extends Model
                 'default_meta_description' => 'Browse modern, performance-focused inventory at Nitro Motors USA.',
                 'canonical_base_url' => config('app.url'),
                 'business_name' => 'Nitro Motors USA',
-                'business_phone' => '+1 (305) 555-0147',
+                'business_phone' => '+1 (312) 735-9915',
                 'business_email' => 'info@nitromotorsusa.com',
-                'business_address' => '1450 NW 79th Avenue, Miami, FL',
+                'business_address' => '4238 Lindley Ln, Downers Grove, IL 60515',
                 'robots_directive' => 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
                 'enable_indexing' => true,
             ]

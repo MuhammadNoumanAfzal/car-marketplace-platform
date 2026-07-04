@@ -51,7 +51,8 @@
                 <div class="footer-panel">
                     <p class="footer-panel__title">Showroom</p>
                     <div class="footer-list">
-                        <p>Miami, Florida</p>
+                        <p>Downers Grove, Illinois</p>
+                        <p>4238 Lindley Ln, Downers Grove, IL 60515</p>
                         <p>Mon - Fri: 10:00 AM to 7:00 PM</p>
                         <p>Saturday - Sunday: By Appointment</p>
                     </div>
@@ -60,8 +61,8 @@
                 <div class="footer-panel">
                     <p class="footer-panel__title">Contact</p>
                     <div class="footer-list">
-                        <p>sales@nitromotorsusa.com</p>
-                        <p>+1 (305) 555-0147</p>
+                        <p>info@nitromotorsusa.com</p>
+                        <p>+1 (312) 735-9915</p>
                         <p>Trade-in, financing, and remote buying support</p>
                     </div>
                 </div>

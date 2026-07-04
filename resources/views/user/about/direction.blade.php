@@ -18,7 +18,7 @@
                     <div class="map-panel__canvas">
                         <div class="map-panel__overlay">
                             <p class="map-panel__label">Google Maps</p>
-                            <h2 class="map-panel__title">1450 NW 79th Avenue, Miami, FL 33126</h2>
+                            <h2 class="map-panel__title">4238 Lindley Ln, Downers Grove, IL 60515</h2>
                             <p class="map-panel__copy">Embed your final Google Maps iframe here when the production location link is ready.</p>
                         </div>
                     </div>
@@ -28,12 +28,12 @@
                     <div class="direction-panel__group">
                         <p class="direction-panel__eyebrow">Showroom</p>
                         <h3 class="direction-panel__title">Nitro Motors USA</h3>
-                        <p class="direction-panel__copy">1450 NW 79th Avenue<br>Miami, FL 33126</p>
+                        <p class="direction-panel__copy">4238 Lindley Ln<br>Downers Grove, IL 60515</p>
                     </div>
 
                     <div class="direction-panel__group">
                         <p class="direction-panel__eyebrow">Contact</p>
-                        <p class="direction-panel__copy">Phone: +1 (305) 555-0147<br>Email: info@nitromotorsusa.com</p>
+                        <p class="direction-panel__copy">Phone: +1 (312) 735-9915<br>Email: info@nitromotorsusa.com</p>
                     </div>
 
                     <div class="direction-panel__group">

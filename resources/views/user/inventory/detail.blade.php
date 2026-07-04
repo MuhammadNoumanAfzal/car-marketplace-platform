@@ -43,7 +43,7 @@
                                 <a href="{{ route('contact') }}" class="search-band__button w-full justify-center">
                                     <span>{{ $vehicle['status'] === 'sold' ? 'Ask About Similar Vehicles' : 'Contact For Availability' }}</span>
                                 </a>
-                                <a href="{{ route('appointment') }}" class="vehicle-detail-actions__secondary">Call: +1 (305) 555-0147</a>
+                                <a href="{{ route('appointment') }}" class="vehicle-detail-actions__secondary">Call: +1 (312) 735-9915</a>
                             </div>
                         </div>
                     </aside>

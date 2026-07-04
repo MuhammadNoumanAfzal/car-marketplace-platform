@@ -185,7 +185,7 @@
     </div>
 
     <a
-        href="https://wa.me/13055550147"
+        href="https://wa.me/13127359915"
         target="_blank"
         rel="noreferrer"
         aria-label="Chat on WhatsApp"

@@ -327,7 +327,7 @@
                             <div class="location-row__icon">&#9679;</div>
                             <div>
                                 <p class="location-row__title">Nitro Motors USA Showroom</p>
-                                <p class="location-row__copy">Our indoor showroom is located at<br>1450 NW 79th Avenue<br>Miami, FL 33126</p>
+                                <p class="location-row__copy">Our showroom is located at<br>4238 Lindley Ln<br>Downers Grove, IL 60515</p>
                                 <p class="location-row__copy">Nationwide buyers can schedule a virtual walkaround before purchase.</p>
                             </div>
                         </div>
@@ -346,11 +346,11 @@
                     <div class="space-y-4">
                         <div class="location-inline">
                             <span class="location-inline__icon">&#9990;</span>
-                            <span>Phone: +1 (305) 555-0147</span>
+                            <span>Phone: +1 (312) 735-9915</span>
                         </div>
                         <div class="location-inline">
                             <span class="location-inline__icon">&#9993;</span>
-                            <span>Send us a message: sales@nitromotorsusa.com</span>
+                            <span>Send us a message: info@nitromotorsusa.com</span>
                         </div>
                         <div class="location-inline">
                             <span class="location-inline__icon">&#10150;</span>

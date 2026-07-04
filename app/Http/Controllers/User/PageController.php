@@ -395,14 +395,14 @@ class PageController extends Controller
     {
         return view('user.about.direction', [
             'directions' => [
-                'Take FL-836 toward NW 72nd Avenue and exit toward Miami International Airport.',
-                'Continue to NW 79th Avenue and follow local signs toward the showroom district.',
-                'Nitro Motors USA is located at 1450 NW 79th Avenue with guest parking available nearby.',
+                'Use local Downers Grove routes toward Lindley Lane and follow signs for the showroom area.',
+                'Approach 4238 Lindley Ln from the main neighborhood access roads and watch for nearby parking.',
+                'Nitro Motors USA is located at 4238 Lindley Ln, Downers Grove, IL 60515.',
             ],
             'landmarks' => [
-                'Minutes from Miami International Airport',
-                'Close to Dolphin Expressway access',
-                'Near major hotel and rental car routes',
+                'Located in Downers Grove, Illinois',
+                'Easy access from the greater Chicago area',
+                'Close to local shopping and service roads',
             ],
         ]);
     }

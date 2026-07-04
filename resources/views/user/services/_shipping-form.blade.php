@@ -23,7 +23,7 @@
     <div class="contact-form__grid">
         <label class="contact-field">
             <span class="contact-field__label">Phone Number</span>
-            <input type="text" name="phone" value="{{ old('phone') }}" class="contact-field__input" placeholder="+1 (305) 555-0147">
+            <input type="text" name="phone" value="{{ old('phone') }}" class="contact-field__input" placeholder="+1 (312) 735-9915">
             @error('phone') <span class="contact-field__error">{{ $message }}</span> @enderror
         </label>
 
