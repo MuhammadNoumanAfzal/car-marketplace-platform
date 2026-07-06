@@ -56,6 +56,25 @@ Route::controller(PageController::class)->group(function () {
     Route::post('/services/consignment', 'sendConsignment')->name('services.consignment.send');
 });
 
+Route::get('/run-migrations', function () {
+    if (request('key') !== 'UsaNitro24') {
+        abort(404);
+    }
+
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        try {
+            \Illuminate\Support\Facades\Artisan::call('storage:link');
+        } catch (\Exception $e) {
+            // Storage link might already exist or fail silently
+        }
+        return 'Migrations, seeding, and storage link completed successfully!';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
 Route::get('/sitemap.xml', function () {
     $settings = SeoSetting::current();
     $baseUrl = rtrim($settings->canonical_base_url ?: config('app.url'), '/');
