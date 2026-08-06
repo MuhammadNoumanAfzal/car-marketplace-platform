@@ -70,9 +70,15 @@
                 <div class="footer-panel">
                     <p class="footer-panel__title">Follow The Inventory</p>
                     <div class="footer-list">
-                        <p>Instagram showroom updates</p>
-                        <p>YouTube walkarounds</p>
-                        <p>Daily vehicle highlights and arrivals</p>
+                        <a href="https://www.facebook.com/NitroMotorsUSA/" target="_blank" rel="noreferrer" class="footer-social-link">
+                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                            <span>Facebook showroom updates</span>
+                        </a>
+                        <br>
+                        <a href="https://www.instagram.com/nitromotorsusa/" target="_blank" rel="noreferrer" class="footer-social-link">
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                            <span>Instagram showroom updates</span>
+                        </a>
                     </div>
                 </div>
             </div>
