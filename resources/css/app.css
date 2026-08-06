@@ -1434,6 +1434,18 @@
     @apply mt-4 space-y-2.5 text-sm leading-7 text-zinc-300;
   }
 
+  .footer-social-link {
+    @apply flex w-full items-start gap-3 text-zinc-300 transition duration-200 hover:text-white;
+  }
+
+  .footer-social-link i {
+    @apply mt-1 w-4 shrink-0 text-center text-ember;
+  }
+
+  .footer-social-link span {
+    @apply block flex-1;
+  }
+
   .footer-meter {
     @apply mt-5 rounded-[22px] border border-white/10 bg-black/20 p-4;
   }
